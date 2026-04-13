@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PetShop — Login</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>">
+</head>
+<body>
+  <!-- ─── AUTH PAGE LAYOUT ─── -->
+  <main class="auth-page">
+
+    <!-- Left: Visual Panel -->
+    <aside class="auth-visual">
+      <div class="auth-visual-content">
+        <div class="auth-visual-emoji">🐾</div>
+        <h2>Your pets deserve<br>the very best.</h2>
+        <p>Premium food, accessories, and toys — delivered to your door with love.</p>
+        <ul class="auth-features">
+          <li class="auth-feature"><span class="auth-feature-icon">🚚</span> Free delivery on orders over $40</li>
+          <li class="auth-feature"><span class="auth-feature-icon">⭐</span> 10,000+ happy pet parents</li>
+          <li class="auth-feature"><span class="auth-feature-icon">🔒</span> Secure, trusted checkout</li>
+          <li class="auth-feature"><span class="auth-feature-icon">💚</span> Vet-approved products only</li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Right: Login Form -->
+    <section class="auth-form-side">
+      <div class="auth-card">
+
+        <div class="auth-header">
+          <a href="index.html" class="brand">
+            <div class="brand-icon">🐾</div>
+            PetShop
+          </a>
+          <h1>Welcome back!</h1>
+          <p>Sign in to continue shopping for your furry friends.</p>
+        </div>
+
+        <form class="auth-form" id="loginForm" novalidate>
+
+          <!-- Email -->
+          <div class="field-group">
+            <label for="email">Email address</label>
+            <div class="field-wrap">
+              <input type="email" id="email" placeholder="you@example.com" autocomplete="email" />
+            </div>
+            <span class="error-msg" id="emailErr">Please enter a valid email.</span>
+          </div>
+
+          <!-- Password -->
+          <div class="field-group">
+            <label for="password">Password</label>
+            <div class="field-wrap">
+              <input type="password" id="password" placeholder="Enter your password" autocomplete="current-password" />
+              <button type="button" class="toggle-pw" aria-label="Toggle password visibility" data-target="password">👁</button>
+            </div>
+            <span class="error-msg" id="passErr">Password must be at least 6 characters.</span>
+          </div>
+
+          <!-- Forgot -->
+          <div style="text-align:right; margin-top:-8px;">
+            <a href="#" style="font-size:.85rem; color:var(--clr-primary); font-weight:500;">Forgot password?</a>
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" class="btn btn-primary" id="loginBtn">
+            <span>Sign In</span> <span>→</span>
+          </button>
+
+          <div class="divider">or</div>
+
+          <!-- Demo login shortcut -->
+          <button type="button" class="btn btn-outline" id="demoBtn">
+            🎯 Use Demo Account
+          </button>
+
+        </form>
+
+        <p class="auth-switch" style="margin-top:24px;">
+          New to PetShop? <a href="register.html">Create an account</a>
+        </p>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Toast container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="app.js"></script>
+  <script>
+    // ── Login page script ──
+    const loginForm = document.getElementById('loginForm');
+    const emailInp  = document.getElementById('email');
+    const passInp   = document.getElementById('password');
+    const emailErr  = document.getElementById('emailErr');
+    const passErr   = document.getElementById('passErr');
+
+    // Redirect if already logged in
+    if (localStorage.getItem('ps_user')) {
+      window.location.href = 'index.html';
+    }
+
+    // Password toggle
+    document.querySelectorAll('.toggle-pw').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const inp = document.getElementById(btn.dataset.target);
+        inp.type = inp.type === 'password' ? 'text' : 'password';
+        btn.textContent = inp.type === 'password' ? '👁' : '🙈';
+      });
+    });
+
+    // Validate helpers
+    function validateEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+    function setError(el, inp, show) {
+      el.classList.toggle('show', show);
+      inp.classList.toggle('error', show);
+    }
+
+    // Demo login
+    document.getElementById('demoBtn').addEventListener('click', () => {
+      emailInp.value = 'demo@petshop.com';
+      passInp.value  = 'demo123';
+      loginForm.requestSubmit();
+    });
+
+    // Submit
+    loginForm.addEventListener('submit', e => {
+      e.preventDefault();
+      let valid = true;
+
+      if (!validateEmail(emailInp.value.trim())) {
+        setError(emailErr, emailInp, true); valid = false;
+      } else { setError(emailErr, emailInp, false); }
+
+      if (passInp.value.length < 6) {
+        setError(passErr, passInp, true); valid = false;
+      } else { setError(passErr, passInp, false); }
+
+      if (!valid) return;
+
+      // Save mock user session
+      const user = {
+        name:   emailInp.value.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
+        email:  emailInp.value.trim(),
+        avatar: emailInp.value[0].toUpperCase(),
+      };
+      localStorage.setItem('ps_user', JSON.stringify(user));
+
+      showToast('🎉 Welcome back, ' + user.name + '!', 'success');
+      setTimeout(() => window.location.href = 'index.html', 1000);
+    });
+
+    // Clear error on input
+    [emailInp, passInp].forEach(inp => {
+      inp.addEventListener('input', () => {
+        inp.classList.remove('error');
+      });
+    });
+  </script>
+</body>
+</html>
