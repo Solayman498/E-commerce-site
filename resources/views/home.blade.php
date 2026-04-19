@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PetShop — Premium Pet Products</title>
+  <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>">
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════
+     CART OVERLAY & SIDEBAR
+════════════════════════════════════════════════ -->
+<div class="cart-overlay" id="cartOverlay"></div>
+<aside class="cart-sidebar" id="cartSidebar" aria-label="Shopping cart">
+  <div class="cart-header">
+    <div>
+      <h3>🛒 Your Cart</h3>
+      <div class="cart-header-meta" id="cartMeta">0 items</div>
+    </div>
+    <button class="close-btn" id="closeSidebarBtn" aria-label="Close cart">✕</button>
+  </div>
+  <div class="cart-items" id="cartItemsList"></div>
+  <div class="cart-footer">
+    <div class="cart-subtotal">
+      <span class="label">Subtotal</span>
+      <span class="amount" id="cartTotal">$0.00</span>
+    </div>
+    <button class="btn btn-primary checkout-btn" onclick="showToast('🚀 Checkout coming soon! (Connect your Laravel API)', 'success')">
+      Proceed to Checkout →
+    </button>
+  </div>
+</aside>
+
+<!-- ═══════════════════════════════════════════════
+     NAVBAR
+════════════════════════════════════════════════ -->
+<nav class="navbar" role="navigation">
+  <div class="container">
+
+    <!-- Brand -->
+    <a href="index.html" class="brand">
+      <div class="brand-icon">🐾</div>
+      PetShop
+    </a>
+
+    <!-- Center links -->
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="products.html">Products</a></li>
+      <li><a href="#categories">Categories</a></li>
+      <li><a href="#">Orders</a></li>
+    </ul>
+
+    <!-- Right actions -->
+    <div class="nav-actions">
+
+      <!-- Dark mode -->
+      <button class="btn theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle theme">🌙</button>
+
+      <!-- Cart -->
+      <button class="btn cart-btn" id="cartBtn" aria-label="Open cart">
+        🛒
+        <span class="badge cart-count" id="cartCount">0</span>
+      </button>
+
+      <!-- Profile dropdown -->
+      <div class="profile-wrap" id="profileWrap">
+        <button class="profile-btn" aria-haspopup="true" aria-expanded="false">
+          <div class="profile-avatar user-avatar">U</div>
+          <span class="profile-name user-name-display">My Account</span>
+          <span class="chevron">▾</span>
+        </button>
+        <div class="dropdown-menu" role="menu">
+          <div class="dropdown-header">
+            <div class="avatar-lg user-avatar">U</div>
+            <div class="user-info">
+              <div class="name user-name-display">User Name</div>
+              <div class="email user-email-display">user@email.com</div>
+            </div>
+          </div>
+          <div class="dropdown-body">
+            <a href="#" class="dropdown-item">👤 View Profile</a>
+            <a href="#" class="dropdown-item">📦 My Orders</a>
+            <a href="#" class="dropdown-item">❤️ Wishlist</a>
+            <a href="#" class="dropdown-item">⚙️ Settings</a>
+            <div class="dropdown-divider"></div>
+            <button class="dropdown-item danger" onclick="logout()">🚪 Logout</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hamburger (mobile) -->
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile nav menu -->
+<div class="mobile-nav" id="mobileNav">
+  <a href="index.html">🏠 Home</a>
+  <a href="products.html">🛍 Products</a>
+  <a href="#categories">🗂 Categories</a>
+  <a href="#">📦 Orders</a>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     PAGE CONTENT
+════════════════════════════════════════════════ -->
+<main class="page-content">
+
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-text">
+        <div class="hero-tag fade-in">🐾 Trusted by 10,000+ Pet Parents</div>
+        <h1 class="fade-in fade-in-1">
+          Give Your Pet<br>
+          <span>The Life They</span><br>Deserve.
+        </h1>
+        <p class="fade-in fade-in-2">
+          Premium food, toys, and accessories — all handpicked by vets and pet experts. Fast delivery. Happy pets guaranteed.
+        </p>
+        <div class="hero-cta fade-in fade-in-3">
+          <a href="products.html" class="btn btn-primary">Shop Now →</a>
+          <a href="#categories" class="btn btn-outline">Browse Categories</a>
+        </div>
+        <div class="hero-stats fade-in fade-in-4">
+          <div class="hero-stat"><div class="num">10K+</div><div class="lbl">Happy Pets</div></div>
+          <div class="hero-stat"><div class="num">500+</div><div class="lbl">Products</div></div>
+          <div class="hero-stat"><div class="num">4.9★</div><div class="lbl">Avg Rating</div></div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-pet-card">
+          🐶
+          <div class="hero-bubble top-right">
+            <span class="icon">🚚</span> Free delivery
+          </div>
+          <div class="hero-bubble bottom-left">
+            <span class="icon">⭐</span> Vet approved
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CATEGORIES ── -->
+  <section class="section" id="categories">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Browse</div>
+        <h2>Shop by Category</h2>
+        <p>Find everything your pet needs, organized for easy discovery.</p>
+      </div>
+      <div class="categories-grid" id="categoriesGrid"></div>
+    </div>
+  </section>
+
+  <!-- ── FEATURED PRODUCTS ── -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Featured</div>
+        <h2>Best Sellers</h2>
+        <p>Our most-loved products — tried, tested, and tail-waggingly approved.</p>
+      </div>
+      <div class="products-grid" id="featuredGrid"></div>
+      <div style="text-align:center; margin-top:36px;">
+        <a href="products.html" class="btn btn-outline">View All Products →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── BANNER CTA ── -->
+  <section class="section" style="background: linear-gradient(135deg, var(--clr-primary) 0%, #1a4a30 100%);">
+    <div class="container" style="text-align:center; color:#fff;">
+      <div style="font-size:3.5rem; margin-bottom:16px;">🎁</div>
+      <h2 style="font-family:var(--font-display); font-size:2rem; margin-bottom:10px;">New member? Get 10% off!</h2>
+      <p style="opacity:.8; margin-bottom:28px; max-width:420px; margin-left:auto; margin-right:auto;">
+        Use code <strong>WELCOME10</strong> at checkout. Valid on your first order over $25.
+      </p>
+      <a href="products.html" class="btn btn-accent">Start Shopping →</a>
+    </div>
+  </section>
+
+</main>
+
+<!-- ═══════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="brand">
+          <div class="brand-icon" style="width:32px;height:32px;font-size:1rem;">🐾</div>
+          PetShop
+        </a>
+        <p>Premium pet products delivered with care. Your pet's happiness is our mission.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Shop</h5>
+        <a href="products.html">All Products</a>
+        <a href="#">Dog Food</a>
+        <a href="#">Cat Accessories</a>
+        <a href="#">Toys & Play</a>
+        <a href="#">Deals</a>
+      </div>
+      <div class="footer-col">
+        <h5>Account</h5>
+        <a href="#">My Profile</a>
+        <a href="#">Orders</a>
+        <a href="#">Wishlist</a>
+        <a href="#">Settings</a>
+        <a href="login.html">Sign In</a>
+      </div>
+      <div class="footer-col">
+        <h5>Support</h5>
+        <a href="#">Help Center</a>
+        <a href="#">Shipping Info</a>
+        <a href="#">Returns</a>
+        <a href="#">Contact Us</a>
+        <a href="#">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 PetShop. All rights reserved.</span>
+      <span>Made with ❤️ for pet lovers everywhere 🐾</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Toast container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="{{ asset('js/app.js') }}"></script>
+<script>
+  // ── Home page specific logic ──
+
+  // Guard: redirect to login if not authenticated
+  // Uncomment below to enforce auth (disabled for demo browsing)
+  // if (!localStorage.getItem('ps_user')) window.location.href = 'login.html';
+
+  // Render categories
+  const catGrid = document.getElementById('categoriesGrid');
+  catGrid.innerHTML = CATEGORIES.map(c => `
+    <div class="category-card" onclick="window.location='products.html?cat=${c.name}'">
+      <div class="category-icon">${c.emoji}</div>
+      <div class="category-name">${c.name}</div>
+      <div class="category-count">${c.count} products</div>
+    </div>`).join('');
+
+  // Render featured products (top 8 by reviews)
+  const featured = [...PRODUCTS].sort((a, b) => b.reviews - a.reviews).slice(0, 8);
+  document.getElementById('featuredGrid').innerHTML = featured.map(productCardHTML).join('');
+</script>
+
+</body>
+</html>
