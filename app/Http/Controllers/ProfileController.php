@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -26,13 +27,33 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $user = $request->user();
+        
+        // ভ্যালিডেশন হওয়া ডাটা দিয়ে ফিল করা
+        $user->fill($request->validated());
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        // কাস্টম ফিল্ডগুলো সেভ করা (ফোন, অ্যাড্রেস ইত্যাদি)
+        $user->phone = $request->phone;
+        $user->address = $request->address;
+        $user->city = $request->city;
+        $user->postal_code = $request->postal_code;
+
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
         }
 
-        $request->user()->save();
+        // ইমেজ আপলোড হ্যান্ডলিং
+        if ($request->hasFile('profile_image')) {
+            // পুরনো ইমেজ থাকলে তা ডিলিট করা (অপশনাল কিন্তু বেস্ট প্র্যাকটিস)
+            if ($user->profile_image) {
+                Storage::disk('public')->delete($user->profile_image);
+            }
+            
+            $path = $request->file('profile_image')->store('profiles', 'public');
+            $user->profile_image = $path;
+        }
+
+        $user->save();
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
@@ -56,5 +77,20 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    /**
+     * Remove the profile image.
+     */
+    public function removeImage(Request $request): RedirectResponse
+    {
+        $user = $request->user();
+        if ($user->profile_image) {
+            Storage::disk('public')->delete($user->profile_image);
+            $user->profile_image = null;
+            $user->save();
+        }
+
+        return Redirect::route('profile.edit')->with('status', 'image-removed');
     }
 }

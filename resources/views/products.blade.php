@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PetShop — Products</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>">
+@extends('layouts.app')
+
+@section('title', 'PetShop — Products')
+
+@push('styles')
   <style>
     /* Extra styles for products page layout */
     .filter-mobile-bar {
@@ -29,8 +26,8 @@
       .filter-mobile-bar { display: flex; }
     }
   </style>
-</head>
-<body>
+@endpush
+@section('content')
 
 <!-- Cart overlay & sidebar (same as index) -->
 <div class="cart-overlay" id="cartOverlay"></div>
@@ -54,56 +51,8 @@
   </div>
 </aside>
 
-<!-- NAVBAR -->
-<nav class="navbar">
-  <div class="container">
-    <a href="index.html" class="brand">
-      <div class="brand-icon">🐾</div> PetShop
-    </a>
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="products.html">Products</a></li>
-      <li><a href="index.html#categories">Categories</a></li>
-      <li><a href="#">Orders</a></li>
-    </ul>
-    <div class="nav-actions">
-      <button class="btn theme-toggle" id="themeToggle">🌙</button>
-      <button class="btn cart-btn" id="cartBtn">
-        🛒 <span class="badge cart-count" id="cartCount">0</span>
-      </button>
-      <div class="profile-wrap" id="profileWrap">
-        <button class="profile-btn">
-          <div class="profile-avatar user-avatar">U</div>
-          <span class="profile-name user-name-display">My Account</span>
-          <span class="chevron">▾</span>
-        </button>
-        <div class="dropdown-menu">
-          <div class="dropdown-header">
-            <div class="avatar-lg user-avatar">U</div>
-            <div class="user-info">
-              <div class="name user-name-display">User</div>
-              <div class="email user-email-display">user@email.com</div>
-            </div>
-          </div>
-          <div class="dropdown-body">
-            <a href="#" class="dropdown-item">👤 View Profile</a>
-            <a href="#" class="dropdown-item">📦 My Orders</a>
-            <a href="#" class="dropdown-item">❤️ Wishlist</a>
-            <div class="dropdown-divider"></div>
-            <button class="dropdown-item danger" onclick="logout()">🚪 Logout</button>
-          </div>
-        </div>
-      </div>
-      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
-    </div>
-  </div>
-</nav>
-<div class="mobile-nav" id="mobileNav">
-  <a href="index.html">🏠 Home</a>
-  <a href="products.html">🛍 Products</a>
-  <a href="index.html#categories">🗂 Categories</a>
-  <a href="#">📦 Orders</a>
-</div>
+
+
 
 <main class="page-content">
   <!-- Page Banner -->
@@ -167,18 +116,8 @@
   </div>
 </main>
 
-<!-- Footer -->
-<footer class="footer">
-  <div class="container">
-    <div class="footer-bottom">
-      <span>© 2025 PetShop. All rights reserved.</span>
-      <span>🐾 Happy pets, happy lives.</span>
-    </div>
-  </div>
-</footer>
-
-<div class="toast-container" id="toastContainer"></div>
-<script src="app.js"></script>
+@endsection
+@push('scripts')
 <script>
   /* ── Products Page Logic ── */
 
@@ -315,5 +254,4 @@
   renderSidebars();
   renderProducts();
 </script>
-</body>
-</html>
+@endpush

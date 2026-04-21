@@ -732,3 +732,78 @@ input, textarea { font-family: inherit; }
   .categories-grid { grid-template-columns: repeat(2, 1fr); }
   :root { --sidebar-w: 100vw; }
 }
+
+
+
+/* settings page */
+/* Profile Specific Styles */
+.settings-container {
+    max-width: 850px;
+    margin: 40px auto;
+}
+
+.settings-card {
+    background: var(--clr-bg-card, #fff);
+    border-radius: 16px;
+    padding: 30px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    border: 1px solid var(--clr-border, #eee);
+}
+
+.settings-card h3 {
+    font-size: 1.25rem;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Avatar Styling */
+.avatar-section {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.avatar-preview-wrapper {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--clr-primary-light, #eef2ff);
+    border: 3px solid var(--clr-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    color: var(--clr-primary);
+}
+
+/* Danger Zone Styling */
+.danger-zone {
+    border: 1px solid #fee2e2;
+    background: #fffafa;
+}
+
+.danger-zone h3 {
+    color: #dc2626;
+}
+
+.btn-danger {
+    background: #dc2626;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn-danger:hover {
+    background: #b91c1c;
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);
+}

@@ -35,10 +35,10 @@ const CATEGORIES = [
 /* ============================================================
    CART STATE
    ============================================================ */
-let cart = JSON.parse(localStorage.getItem('ps_cart') || '[]');
+let cart =[];
 
 function saveCart() {
-  localStorage.setItem('ps_cart', JSON.stringify(cart));
+  // localStorage.setItem('ps_cart', JSON.stringify(cart));
 }
 
 function getCartTotal() {

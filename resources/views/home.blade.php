@@ -1,14 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PetShop — Premium Pet Products</title>
-  <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>">
-</head>
-<body>
 
+@extends('layouts.app')
+
+@section('title', 'PetShop — Products')
+
+@section('content')
 <!-- ═══════════════════════════════════════════════
      CART OVERLAY & SIDEBAR
 ════════════════════════════════════════════════ -->
@@ -33,76 +28,12 @@
   </div>
 </aside>
 
-<!-- ═══════════════════════════════════════════════
-     NAVBAR
-════════════════════════════════════════════════ -->
-<nav class="navbar" role="navigation">
-  <div class="container">
 
-    <!-- Brand -->
-    <a href="index.html" class="brand">
-      <div class="brand-icon">🐾</div>
-      PetShop
-    </a>
-
-    <!-- Center links -->
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="products.html">Products</a></li>
-      <li><a href="#categories">Categories</a></li>
-      <li><a href="#">Orders</a></li>
-    </ul>
-
-    <!-- Right actions -->
-    <div class="nav-actions">
-
-      <!-- Dark mode -->
-      <button class="btn theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle theme">🌙</button>
-
-      <!-- Cart -->
-      <button class="btn cart-btn" id="cartBtn" aria-label="Open cart">
-        🛒
-        <span class="badge cart-count" id="cartCount">0</span>
-      </button>
-
-      <!-- Profile dropdown -->
-      <div class="profile-wrap" id="profileWrap">
-        <button class="profile-btn" aria-haspopup="true" aria-expanded="false">
-          <div class="profile-avatar user-avatar">U</div>
-          <span class="profile-name user-name-display">My Account</span>
-          <span class="chevron">▾</span>
-        </button>
-        <div class="dropdown-menu" role="menu">
-          <div class="dropdown-header">
-            <div class="avatar-lg user-avatar">U</div>
-            <div class="user-info">
-              <div class="name user-name-display">User Name</div>
-              <div class="email user-email-display">user@email.com</div>
-            </div>
-          </div>
-          <div class="dropdown-body">
-            <a href="#" class="dropdown-item">👤 View Profile</a>
-            <a href="#" class="dropdown-item">📦 My Orders</a>
-            <a href="#" class="dropdown-item">❤️ Wishlist</a>
-            <a href="#" class="dropdown-item">⚙️ Settings</a>
-            <div class="dropdown-divider"></div>
-            <button class="dropdown-item danger" onclick="logout()">🚪 Logout</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Hamburger (mobile) -->
-      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-  </div>
-</nav>
 
 <!-- Mobile nav menu -->
 <div class="mobile-nav" id="mobileNav">
-  <a href="index.html">🏠 Home</a>
-  <a href="products.html">🛍 Products</a>
+  <a href="{{ route('home') }}">🏠 Home</a>
+  <a href="{{ route('products.index') }}">🛍 Products</a>
   <a href="#categories">🗂 Categories</a>
   <a href="#">📦 Orders</a>
 </div>
@@ -189,75 +120,34 @@
 
 </main>
 
-<!-- ═══════════════════════════════════════════════
-     FOOTER
-════════════════════════════════════════════════ -->
-<footer class="footer">
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <a href="index.html" class="brand">
-          <div class="brand-icon" style="width:32px;height:32px;font-size:1rem;">🐾</div>
-          PetShop
-        </a>
-        <p>Premium pet products delivered with care. Your pet's happiness is our mission.</p>
-      </div>
-      <div class="footer-col">
-        <h5>Shop</h5>
-        <a href="products.html">All Products</a>
-        <a href="#">Dog Food</a>
-        <a href="#">Cat Accessories</a>
-        <a href="#">Toys & Play</a>
-        <a href="#">Deals</a>
-      </div>
-      <div class="footer-col">
-        <h5>Account</h5>
-        <a href="#">My Profile</a>
-        <a href="#">Orders</a>
-        <a href="#">Wishlist</a>
-        <a href="#">Settings</a>
-        <a href="login.html">Sign In</a>
-      </div>
-      <div class="footer-col">
-        <h5>Support</h5>
-        <a href="#">Help Center</a>
-        <a href="#">Shipping Info</a>
-        <a href="#">Returns</a>
-        <a href="#">Contact Us</a>
-        <a href="#">Privacy Policy</a>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <span>© 2025 PetShop. All rights reserved.</span>
-      <span>Made with ❤️ for pet lovers everywhere 🐾</span>
-    </div>
-  </div>
-</footer>
+@endsection
 
-<!-- Toast container -->
-<div class="toast-container" id="toastContainer"></div>
-
-<script src="{{ asset('js/app.js') }}"></script>
+@push('scripts')
 <script>
-  // ── Home page specific logic ──
+  document.addEventListener('DOMContentLoaded', () => {
 
-  // Guard: redirect to login if not authenticated
-  // Uncomment below to enforce auth (disabled for demo browsing)
-  // if (!localStorage.getItem('ps_user')) window.location.href = 'login.html';
+    // categories safe render
+    const catGrid = document.getElementById('categoriesGrid');
+    if (catGrid && typeof CATEGORIES !== "undefined") {
+      catGrid.innerHTML = CATEGORIES.map(c => `
+        <div class="category-card" onclick="window.location='products.html?cat=${c.name}'">
+          <div class="category-icon">${c.emoji}</div>
+          <div class="category-name">${c.name}</div>
+          <div class="category-count">${c.count} products</div>
+        </div>
+      `).join('');
+    }
 
-  // Render categories
-  const catGrid = document.getElementById('categoriesGrid');
-  catGrid.innerHTML = CATEGORIES.map(c => `
-    <div class="category-card" onclick="window.location='products.html?cat=${c.name}'">
-      <div class="category-icon">${c.emoji}</div>
-      <div class="category-name">${c.name}</div>
-      <div class="category-count">${c.count} products</div>
-    </div>`).join('');
+    // featured safe render
+    const featuredGrid = document.getElementById('featuredGrid');
+    if (featuredGrid && typeof PRODUCTS !== "undefined") {
+      const featured = [...PRODUCTS]
+        .sort((a, b) => b.reviews - a.reviews)
+        .slice(0, 8);
 
-  // Render featured products (top 8 by reviews)
-  const featured = [...PRODUCTS].sort((a, b) => b.reviews - a.reviews).slice(0, 8);
-  document.getElementById('featuredGrid').innerHTML = featured.map(productCardHTML).join('');
+      featuredGrid.innerHTML = featured.map(productCardHTML).join('');
+    }
+
+  });
 </script>
-
-</body>
-</html>
+@endpush
