@@ -1,25 +1,17 @@
-<!-- ═══════════════════════════════════════════════
-     NAVBAR
-════════════════════════════════════════════════ -->
 <nav class="navbar" role="navigation">
   <div class="container">
 
-    <!-- Brand -->
     <a href="{{ route('home') }}" class="brand">
       <div class="brand-icon">🐾</div>
       PetShop
     </a>
 
-    <!-- Center links -->
     <ul class="nav-links">
       <li><a href="{{ route('home') }}">Home</a></li>
       <li><a href="{{ route('products.index') }}">Products</a></li>
       <li><a href="#categories">Categories</a></li>
       <li><a href="#">Orders</a></li>
     </ul>
-
-    <!-- Right actions -->
-    <div class="nav-actions">
 
     <div class="nav-actions">
         <button class="btn theme-toggle" id="themeToggle">🌙</button>
@@ -30,14 +22,26 @@
         @auth
             <div class="profile-wrap" id="profileWrap">
                 <button class="profile-btn">
-                    <div class="profile-avatar user-avatar">{{ substr(Auth::user()->name, 0, 1) }}</div>
+                    <div class="profile-avatar user-avatar">
+                        @if(Auth::user()->profile_image)
+                            <img src="{{ asset('storage/' . Auth::user()->profile_image) }}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">
+                        @else
+                            {{ substr(Auth::user()->name, 0, 1) }}
+                        @endif
+                    </div>
                     <span class="profile-name user-name-display">{{ Auth::user()->name }}</span>
                     <span class="chevron">▾</span>
                 </button>
                 
                 <div class="dropdown-menu">
                     <div class="dropdown-header">
-                        <div class="avatar-lg user-avatar">{{ substr(Auth::user()->name, 0, 1) }}</div>
+                        <div class="avatar-lg user-avatar">
+                            @if(Auth::user()->profile_image)
+                                <img src="{{ asset('storage/' . Auth::user()->profile_image) }}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">
+                            @else
+                                {{ substr(Auth::user()->name, 0, 1) }}
+                            @endif
+                        </div>
                         <div class="user-info">
                             <div class="name user-name-display">{{ Auth::user()->name }}</div>
                             <div class="email user-email-display">{{ Auth::user()->email }}</div>
@@ -59,10 +63,14 @@
                 </div>
             </div>
         @endauth
-      <!-- Hamburger (mobile) -->
-      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
-        <span></span><span></span><span></span>
-      </button>
+
+        @guest
+            <a href="{{ route('login') }}" class="btn btn-outline" style="margin-left: 10px;">Login</a>
+        @endguest
+
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+            <span></span><span></span><span></span>
+        </button>
     </div>
   </div>
 </nav>

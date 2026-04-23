@@ -56,7 +56,7 @@
           Premium food, toys, and accessories — all handpicked by vets and pet experts. Fast delivery. Happy pets guaranteed.
         </p>
         <div class="hero-cta fade-in fade-in-3">
-          <a href="products.html" class="btn btn-primary">Shop Now →</a>
+          <a href="{{ route('products.index') }}" class="btn btn-primary">Shop Now →</a>
           <a href="#categories" class="btn btn-outline">Browse Categories</a>
         </div>
         <div class="hero-stats fade-in fade-in-4">
@@ -101,7 +101,7 @@
       </div>
       <div class="products-grid" id="featuredGrid"></div>
       <div style="text-align:center; margin-top:36px;">
-        <a href="products.html" class="btn btn-outline">View All Products →</a>
+        <a href="{{ route('products.index') }}" class="btn btn-outline">View All Products →</a>
       </div>
     </div>
   </section>
@@ -114,7 +114,7 @@
       <p style="opacity:.8; margin-bottom:28px; max-width:420px; margin-left:auto; margin-right:auto;">
         Use code <strong>WELCOME10</strong> at checkout. Valid on your first order over $25.
       </p>
-      <a href="products.html" class="btn btn-accent">Start Shopping →</a>
+      <a href="{{ route('products.index') }}" class="btn btn-accent">Start Shopping →</a>
     </div>
   </section>
 
