@@ -6,9 +6,17 @@ use App\Models\Product;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::all();
+        $query = Product::query();
+
+        // category filter
+        if ($request->has('category')) {
+            $query->where('category', $request->category);
+        }
+
+        $products = $query->get();
+
         return view('products', compact('products'));
     }
 }

@@ -3,6 +3,7 @@
 use App\Models\User;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -35,13 +36,12 @@ Route::post('/login', function (Request $request) {
 });
 
 
-Route::get('/', function () { return view('home'); })->name('home');
-Route::get('/products', function () { return view('products'); })->name('products.index');
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+
+
 Route::get('/login', function () { return view('auth.login'); })->name('login');
 Route::get('/register', function () { return view('auth.register'); })->name('register');
-
-
-
-
 
 require __DIR__.'/auth.php';

@@ -9,6 +9,31 @@
     @stack('styles')
 </head>
 <body>
+    <div class="cart-overlay" id="cartOverlay"></div>
+
+    <aside class="cart-sidebar" id="cartSidebar" aria-label="Shopping cart">
+        <div class="cart-header">
+            <div>
+                <h3>🛒 Your Cart</h3>
+                <div class="cart-header-meta" id="cartMeta">0 items</div>
+            </div>
+            <button class="close-btn" id="closeSidebarBtn" aria-label="Close cart">✕</button>
+        </div>
+
+        <div class="cart-items" id="cartItemsList"></div>
+
+        <div class="cart-footer">
+            <div class="cart-subtotal">
+                <span class="label">Subtotal</span>
+                <span class="amount" id="cartTotal">0.00 BDT</span>
+            </div>
+            <button class="btn btn-primary checkout-btn" onclick="alert('Proceeding to Checkout...')">
+                Proceed to Checkout →
+            </button>
+        </div>
+    </aside>
+
+    <div id="toastContainer" class="toast-container"></div>
 
     @include('layouts.navigation')
 
