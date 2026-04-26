@@ -11,78 +11,77 @@
             <p>Update your personal information, addresses, and security settings.</p>
         </div>
 
-        <div class="auth-card" style="margin-bottom: 30px; width: 100%; max-width: 100%;">
-            <form method="post" action="{{ route('profile.update') }}" enctype="multipart/form-data">
-                @csrf
-                @method('patch')
-                
-                <h3 style="margin-bottom: 20px;">👤 Personal Information</h3>
-                
-                <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 25px; padding-bottom: 25px; border-bottom: 1px solid var(--clr-border);">
-                    <div class="profile-avatar" style="width: 80px; height: 80px; font-size: 2rem;">
-                        @if(Auth::user()->profile_image)
-                            <img src="{{ asset('storage/' . Auth::user()->profile_image) }}" id="avatarPreview" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">
-                        @else
-                            <span id="avatarText">{{ substr(Auth::user()->name, 0, 1) }}</span>
-                        @endif
-                    </div>
-                    <div>
-                        <input type="file" name="profile_image" id="profile_image" style="display:none;" onchange="previewImage(this)">
-                        <button type="button" class="btn btn-outline" onclick="document.getElementById('profile_image').click()">Upload New Photo</button>
-                        <p style="font-size: 0.75rem; color: var(--clr-text-muted); margin-top: 5px;">Allowed JPG or PNG. Max size 2MB.</p>
-                    </div>
-                </div>
+<div class="auth-card" style="margin-bottom: 30px; width: 100%; max-width: 100%;">
 
-                <div class="form-row">
-                    <div class="field-group">
-                        <label>Full Name</label>
-                        <input type="text" name="name" value="{{ old('name', $user->name) }}" required>
-                    </div>
-                    <div class="field-group">
-                        <label>Email Address</label>
-                        <input type="email" name="email" value="{{ old('email', $user->email) }}" required>
-                    </div>
-                </div>
+    <form method="post" action="{{ route('profile.update') }}" enctype="multipart/form-data">
+        @csrf
+        @method('patch')
 
-                <div class="form-row">
-                    <div class="field-group">
-                        <label>Phone Number</label>
-                        <input type="text" name="phone" value="{{ old('phone', $user->phone) }}" placeholder="+880 1XXX XXXXXX">
-                    </div>
-                </div>
+        <h3>👤 Personal Information</h3>
 
-                <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Save Personal Info</button>
-            </form>
+        <!-- Profile Image -->
+        <div class="field-group" style="margin-bottom: 25px; display:flex; align-items:center; gap:20px;">
+            
+            <div class="settings-avatar">
+                @if(Auth::user()->profile_image)
+                    <img src="{{ asset('storage/' . Auth::user()->profile_image) }}" style="width:80px;height:80px;border-radius:50%;object-fit:cover;">
+                @else
+                    <span>{{ substr(Auth::user()->name, 0, 1) }}</span>
+                @endif
+            </div>
+
+            <div>
+                <input type="file" name="profile_image" id="profile_image" hidden onchange="previewImage(this)">
+                <button type="button" class="btn btn-outline" onclick="document.getElementById('profile_image').click()">
+                    Upload New Photo
+                </button>
+            </div>
         </div>
 
-        <div class="auth-card" style="margin-bottom: 30px; width: 100%; max-width: 100%;">
-            <form method="post" action="{{ route('profile.update') }}">
-                @csrf
-                @method('patch')
-                <h3 style="margin-bottom: 20px;">📍 Shipping Address</h3>
-                
-                <div class="field-group">
-                    <label>Street Address</label>
-                    <textarea name="address" rows="2" placeholder="House#, Road#, Area...">{{ old('address', $user->address) }}</textarea>
-                </div>
-
-                <div class="form-row">
-                    <div class="field-group">
-                        <label>City</label>
-                        <input type="text" name="city" value="{{ old('city', $user->city) }}" placeholder="e.g. Dhaka">
-                    </div>
-                    <div class="field-group">
-                        <label>Postal Code</label>
-                        <input type="text" name="postal_code" value="{{ old('postal_code', $user->postal_code) }}" placeholder="e.g. 1212">
-                    </div>
-                </div>
-
-                <button type="submit" class="btn btn-primary">Update Address</button>
-            </form>
+        <!-- Personal Info -->
+        <div class="field-group">
+            <label>Full Name</label>
+            <input type="text" name="name" placeholder="Enter your full name" value="{{ old('name', $user->name) }}" required>
         </div>
 
+        <div class="field-group">
+            <label>Email Address</label>
+            <input type="email" name="email" placeholder="Enter your email" value="{{ old('email', $user->email) }}" required>
+        </div>
+
+        <div class="field-group">
+            <label>Phone Number</label>
+            <input type="text" name="phone" value="{{ old('phone', $user->phone) }}" placeholder="+880 1XXX XXXXXX">
+        </div>
+
+        <h3 style="margin-top:25px;">📍 Shipping Address</h3>
+
+        <div class="field-group">
+            <label>Street Address</label>
+            <textarea name="address" placeholder="Enter your street address" rows="2">{{ old('address', $user->address) }}</textarea>
+        </div>
+
+        <div class="form-row">
+            <div class="field-group">
+                <label>City</label>
+                <input type="text" name="city" placeholder="Enter your city" value="{{ old('city', $user->city) }}">
+            </div>
+
+            <div class="field-group">
+                <label>Postal Code</label>
+                <input type="text" name="postal_code" placeholder="Enter your postal code" value="{{ old('postal_code', $user->postal_code) }}">
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="margin-top: 10px;">
+            Save All Changes
+        </button>
+
+    </form>
+
+</div>
+
         <div class="auth-card" style="margin-bottom: 30px; width: 100%; max-width: 100%;">
-           <div class="auth-card" style="margin-bottom: 30px; width: 100%; max-width: 100%;">
                 <form method="post" action="{{ route('password.update') }}">
                     @csrf
                     @method('put')
@@ -120,7 +119,6 @@
                         <p style="color: green; font-size: 0.85rem; margin-top: 10px;">Password updated successfully!</p>
                     @endif
                 </form>
-            </div>
         </div>
 
         <div class="auth-card danger-zone" style="margin-top: 40px; padding: 25px;">

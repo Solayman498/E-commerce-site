@@ -29,10 +29,10 @@ class ProfileController extends Controller
     {
         $user = $request->user();
         
-        // ভ্যালিডেশন হওয়া ডাটা দিয়ে ফিল করা
+        
         $user->fill($request->validated());
 
-        // কাস্টম ফিল্ডগুলো সেভ করা (ফোন, অ্যাড্রেস ইত্যাদি)
+       
         $user->phone = $request->phone;
         $user->address = $request->address;
         $user->city = $request->city;
@@ -42,9 +42,9 @@ class ProfileController extends Controller
             $user->email_verified_at = null;
         }
 
-        // ইমেজ আপলোড হ্যান্ডলিং
+        
         if ($request->hasFile('profile_image')) {
-            // পুরনো ইমেজ থাকলে তা ডিলিট করা (অপশনাল কিন্তু বেস্ট প্র্যাকটিস)
+            
             if ($user->profile_image) {
                 Storage::disk('public')->delete($user->profile_image);
             }
