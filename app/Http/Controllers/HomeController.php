@@ -9,8 +9,12 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // Get featured products for the homepage
-        $featuredProducts = Product::where('is_featured', true)->take(8)->get();
+        
+        $featuredProducts = Product::select('id', 'name', 'price', 'image', 'category', 'is_featured')
+            ->where('is_featured', true)
+            ->latest() 
+            ->take(8)
+            ->get();
 
         return view('home', compact('featuredProducts'));
     }

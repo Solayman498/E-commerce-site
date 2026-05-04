@@ -8,14 +8,15 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Product::query();
+        
+        $query = Product::select('id', 'name', 'price', 'image', 'category');
 
-        // category filter
-        if ($request->has('category')) {
+       
+        if ($request->filled('category')) {
             $query->where('category', $request->category);
         }
 
-        $products = $query->get();
+        $products = $query->latest()->paginate(12); 
 
         return view('products', compact('products'));
     }

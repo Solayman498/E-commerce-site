@@ -25,11 +25,15 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
-
         $request->session()->regenerate();
 
-        
-        return redirect()->intended(route('home', absolute: false));
+        // অ্যাডমিন কি না চেক করে সরাসরি রিডাইরেক্ট করা
+        if ($request->user()->is_admin) {
+            return redirect()->route('admin.products.index');
+        }
+
+        // সাধারণ ইউজারের জন্য
+        return redirect()->route('dashboard'); 
     }
 
     /**

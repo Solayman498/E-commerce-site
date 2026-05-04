@@ -64,8 +64,7 @@
                         @if($product->is_featured)
                             <span class="product-badge hot">HOT</span>
                         @endif
-                        <img src="{{ $product->image ? asset('storage/products/' . $product->image) : asset('images/default-pet.png') }}" 
-                             alt="{{ $product->name }}" 
+                        <img src="{{ asset('storage/products/' . $product->image) }}" alt="{{ $product->name }}" 
                              style="width: 100%; height: 100%; object-fit: contain;">
                     </div>
                     <div class="product-body">
@@ -86,6 +85,9 @@
                     <a href="{{ route('products.index') }}" class="btn btn-outline">Clear Filters</a>
                 </div>
             @endforelse
+          </div>
+          <div class="pagination-wrapper">
+              {{ $products->links() }}
           </div>
         </div>
       </div>
