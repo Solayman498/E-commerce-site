@@ -10,7 +10,7 @@ class HomeController extends Controller
     public function index()
     {
         
-        $featuredProducts = Product::select('id', 'name', 'price', 'image', 'category', 'is_featured')
+        $featuredProducts = Product::select('id', 'name', 'slug', 'price', 'image', 'category', 'is_featured')
             ->where('is_featured', true)
             ->latest() 
             ->take(8)

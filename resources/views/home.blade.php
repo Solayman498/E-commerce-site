@@ -42,9 +42,9 @@
         {{-- আমরা এখানে ক্যাটাগরিগুলো হার্ডকোড করতে পারি অথবা কন্ট্রোলার থেকে পাঠাতে পারি --}}
         @php
             $displayCategories = [
-                ['name' => 'Dogs', 'emoji' => '🐕'],
-                ['name' => 'Cats', 'emoji' => '🐈'],
-                ['name' => 'Birds', 'emoji' => '🦜'],
+                ['name' => 'Dog', 'emoji' => '🐕'],
+                ['name' => 'Cat', 'emoji' => '🐈'],
+                ['name' => 'Bird', 'emoji' => '🦜'],
                 ['name' => 'Fish', 'emoji' => '🐠'],
             ];
         @endphp
@@ -75,7 +75,9 @@
               @if($product->is_featured)
                 <span class="product-badge hot">HOT</span>
               @endif
+              <a href="{{ route('products.show', $product->slug) }}">
               <img src="{{ asset('storage/products/' . $product->image) }}" alt="Product Image" style="width:100%; height:100%; object-fit:contain;">
+              </a>
             </div>
             <div class="product-body">
               <div class="product-category">{{ $product->category }}</div>

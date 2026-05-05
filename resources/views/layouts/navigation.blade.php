@@ -9,7 +9,7 @@
     <ul class="nav-links">
       <li><a href="{{ route('home') }}">Home</a></li>
       <li><a href="{{ route('products.index') }}">Products</a></li>
-      <li><a href="#categories">Categories</a></li>
+      
       <li><a href="#">Orders</a></li>
     </ul>
 
@@ -48,6 +48,14 @@
                         </div>
                     </div>
                     <div class="dropdown-body">
+                        {{-- অ্যাডমিন প্যানেল লিঙ্ক --}}
+                        @if(Auth::user()->is_admin)
+                            <a href="{{ route('admin.products.index') }}" class="dropdown-item" style="color: #6366f1; font-weight: bold;">
+                                🛠️ Admin Panel
+                            </a>
+                            <div class="dropdown-divider"></div>
+                        @endif
+
                         <a href="{{ route('profile.edit') }}" class="dropdown-item">⚙️ Manage Profile</a>
                         <a href="#" class="dropdown-item">📦 My Orders</a>
                         <a href="#" class="dropdown-item">❤️ Wishlist</a>

@@ -7,30 +7,26 @@ use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ProductController as AdminProductController; // এটি নিশ্চিত করুন
 
-// ১. ড্যাশবোর্ড থেকে হোমে রিডাইরেক্ট
+// 1. home redirect from dashboard
 Route::get('/dashboard', function () {
     return redirect()->route('home');
 });
 
-// ২. হোম এবং সাধারণ প্রোডাক্ট লিস্ট
+// 2. home and general product list
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/products', [ProductController::class, 'index'])->name('products.index'); 
 
-// ৩. প্রোফাইল রাউটস
+// 3. profile routes
 Route::middleware('auth')->group(function () {
     Route::get('/settings', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/settings', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/settings', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-/* 
-  ❌ এখান থেকে মাঝখানের কাস্টম Route::post('/login', ...) ডিলিট করে দিয়েছি। 
-  এটিই আপনাকে হোমে পাঠিয়ে দিচ্ছিল।
-*/
 
-// ৪. অ্যাডমিন রাউটস (Middleware এবং Correct Controller নিশ্চিত করা হয়েছে)
+// 4. admin product management routes
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    // এখানে AdminProductController ব্যবহার করা হয়েছে
+    //  AdminProductController 
     Route::get('/products', [AdminProductController::class, 'index'])->name('products.index');
     Route::get('/products/create', [AdminProductController::class, 'create'])->name('products.create');
     Route::post('/products/store', [AdminProductController::class, 'store'])->name('products.store');
@@ -39,5 +35,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::delete('/products/{id}', [AdminProductController::class, 'destroy'])->name('products.destroy');
 });
 
-// ৫. ব্রিজের অথেনটিকেশন রাউটস (এটি শেষে থাকা জরুরি)
+// 5. product detail page
+// public product detail route
+Route::get('/product/{slug}', [App\Http\Controllers\ProductController::class, 'show'])->name('products.show');
+
+// 6. authentication routes (this should be at the end)
 require __DIR__.'/auth.php';
