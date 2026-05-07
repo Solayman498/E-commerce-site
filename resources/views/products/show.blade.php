@@ -45,7 +45,9 @@
                         <div class="border-t border-gray-100 pt-6 mb-8">
                             <div class="flex items-center gap-4">
                                 <div class="flex-1">
-                                    <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-xl shadow-lg shadow-blue-200 transition-all active:scale-95">
+                                    <button 
+                                        class="add-to-cart-btn w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-xl shadow-lg transition-all"
+                                        onclick="addToCart('{{ $product->id }}', '{{ $product->name }}', '{{ $product->price }}', '{{ $product->image }}');">
                                         Add To Cart 🛒
                                     </button>
                                 </div>

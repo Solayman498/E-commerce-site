@@ -34,8 +34,9 @@ function addToCart(id, name, price, image) {
     
     localStorage.setItem('ps_cart', JSON.stringify(cart));
     updateCartUI();
-    openSidebar();
+    // openSidebar();
 }
+
 
 function renderCartItems() {
     const container = document.getElementById('cartItemsList');
@@ -85,7 +86,7 @@ function closeSidebar() {
 }
 
 function updateQty(id, delta) {
-    const item = cart.find(i => i.id === id);
+    const item = cart.find(i => i.id == id);
     if (item) {
         item.qty += delta;
         if (item.qty <= 0) cart = cart.filter(i => i.id !== id);
@@ -96,7 +97,7 @@ function updateQty(id, delta) {
 }
 
 function removeFromCart(id) {
-    cart = cart.filter(i => i.id !== id);
+    cart = cart.filter(i => i.id != id);
     localStorage.setItem('ps_cart', JSON.stringify(cart));
     updateCartUI();
     renderCartItems();
@@ -118,3 +119,4 @@ document.addEventListener('DOMContentLoaded', () => {
     initProfileDropdown();
     updateCartUI();
 });
+

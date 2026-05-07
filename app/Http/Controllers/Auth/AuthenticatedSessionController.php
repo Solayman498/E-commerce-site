@@ -33,7 +33,7 @@ class AuthenticatedSessionController extends Controller
         }
 
         // সাধারণ ইউজারের জন্য
-        return redirect()->route('dashboard'); 
+        return redirect()->route('home'); 
     }
 
     /**
