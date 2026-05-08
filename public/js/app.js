@@ -1,7 +1,7 @@
-// ১. স্টেট ম্যানেজমেন্ট
+// 1. State Management
 let cart = JSON.parse(localStorage.getItem('ps_cart') || '[]');
 
-// ২. থিম ম্যানেজমেন্ট (Dark Mode)
+// 2. Theme Management (Dark Mode)
 function applyTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('ps_theme', theme);
@@ -14,7 +14,7 @@ function toggleTheme() {
     applyTheme(current === 'dark' ? 'light' : 'dark');
 }
 
-// ৩. প্রোফাইল ড্রপডাউন
+// 3. Profile Dropdown
 function initProfileDropdown() {
     const wrap = document.getElementById('profileWrap');
     if (!wrap) return;
@@ -26,7 +26,7 @@ function initProfileDropdown() {
     document.addEventListener('click', () => wrap.classList.remove('open'));
 }
 
-// ৪. কার্ট লজিক (আগের মতোই থাকবে)
+// 4. Cart Logic
 function addToCart(id, name, price, image) {
     const existing = cart.find(i => i.id === id);
     if (existing) existing.qty++;
@@ -37,7 +37,7 @@ function addToCart(id, name, price, image) {
     // openSidebar();
 }
 
-
+// 5. Cart Sidebar Rendering
 function renderCartItems() {
     const container = document.getElementById('cartItemsList');
     if (!container) return;
@@ -63,6 +63,8 @@ function renderCartItems() {
         </div>
     `).join('');
 }
+
+// 6. Cart UI Update
 
 function updateCartUI() {
     const count = cart.reduce((n, item) => n + item.qty, 0);
@@ -103,20 +105,95 @@ function removeFromCart(id) {
     renderCartItems();
 }
 
-// ৫. ইনাইটালাইজেশন (DOMContentLoaded)
+// 7. Initialization (DOMContentLoaded)
 document.addEventListener('DOMContentLoaded', () => {
-    // থিম সেটআপ
+    // Theme setup
     const savedTheme = localStorage.getItem('ps_theme') || 'light';
     applyTheme(savedTheme);
     document.getElementById('themeToggle')?.addEventListener('click', toggleTheme);
 
-    // কার্ট ইভেন্ট
+    // Cart events  
     document.getElementById('cartBtn')?.addEventListener('click', (e) => { e.preventDefault(); openSidebar(); });
     document.getElementById('closeSidebarBtn')?.addEventListener('click', closeSidebar);
     document.getElementById('cartOverlay')?.addEventListener('click', closeSidebar);
 
-    // অন্যান্য UI
+    // Other UI
     initProfileDropdown();
     updateCartUI();
 });
 
+// 8. Order Placement Function
+async function placeOrder() {
+    // Collect data from the cart
+    const cartData = JSON.stringify(cart); // Convert our cart array to a string    
+    const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+    if (cart.length === 0) {
+        alert("Your cart is empty!");
+        return;
+    }
+
+    try {
+        //  Send data to the Laravel controller
+        const response = await fetch('/place-order', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+                cart_data: cartData,
+                total_amount: totalAmount
+            })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {  
+            localStorage.removeItem('ps_cart');
+            cart = [];
+            updateCartUI();
+            
+            alert('Order Placed Successfully! Your Order ID: ' + result.order_id);
+            window.location.href = '/shipping-details';
+        } else {
+            alert('Error: ' + result.message);
+        }
+    } catch (error) {
+        console.error('Error placing order:', error);
+    }
+}
+
+//9. Checkout Page Initialization
+function initCheckoutPage() {
+    const summaryContainer = document.getElementById('checkoutSummaryItems');
+    if (!summaryContainer) return; 
+    if (cart.length === 0) {
+        window.location.href = '/'; 
+        return;
+    }
+
+    //  show cart items in summary
+    summaryContainer.innerHTML = cart.map(item => `
+        <div class="flex justify-between items-center bg-gray-50 p-3 rounded-xl">
+            <div class="flex items-center gap-3">
+                <img src="/storage/products/${item.image}" class="w-12 h-12 rounded-lg object-cover">
+                <div>
+                    <h5 class="font-bold text-sm text-gray-800">${item.name}</h5>
+                    <p class="text-xs text-gray-500">${item.qty} x ${item.price} BDT</p>
+                </div>
+            </div>
+            <span class="font-bold text-gray-700">${(item.price * item.qty).toFixed(0)} BDT</span>
+        </div>
+    `).join('');
+
+    // total calculation
+    const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+    const deliveryFee = 60;
+    const total = subtotal + deliveryFee;
+
+    document.getElementById('summarySubtotal').textContent = subtotal.toFixed(2) + ' BDT';
+    document.getElementById('summaryTotal').textContent = total.toFixed(2) + ' BDT';
+}
+
+document.addEventListener('DOMContentLoaded', initCheckoutPage);

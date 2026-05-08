@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'PetShop')</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
@@ -28,9 +29,9 @@
                 <span class="label">Subtotal</span>
                 <span class="amount" id="cartTotal">0.00 BDT</span>
             </div>
-            <button class="btn btn-primary checkout-btn" onclick="alert('Proceeding to Checkout...')">
+            <a href="{{ route('checkout') }}" class="btn btn-primary checkout-btn w-full text-center py-3 block bg-blue-600 text-white rounded-lg font-bold">
                 Proceed to Checkout →
-            </button>
+            </a>
         </div>
     </aside>
 

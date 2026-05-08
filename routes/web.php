@@ -5,7 +5,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\ProductController as AdminProductController; // এটি নিশ্চিত করুন
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\OrderController;
 
 // 1. home redirect from dashboard
 Route::get('/dashboard', function () {
@@ -36,8 +37,14 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 });
 
 // 5. product detail page
-// public product detail route
 Route::get('/product/{slug}', [App\Http\Controllers\ProductController::class, 'show'])->name('products.show');
 
-// 6. authentication routes (this should be at the end)
+// 6. order routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout');
+    Route::post('/place-order', [OrderController::class, 'store'])->name('order.store');
+    Route::get('/shipping-details', [OrderController::class, 'shippingDetails'])->name('order.shipping');
+});
+
+// 7. authentication routes (this should be at the end)
 require __DIR__.'/auth.php';
