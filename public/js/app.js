@@ -151,11 +151,8 @@ async function placeOrder() {
 
         if (result.success) {  
             localStorage.removeItem('ps_cart');
-            cart = [];
-            updateCartUI();
-            
-            alert('Order Placed Successfully! Your Order ID: ' + result.order_id);
-            window.location.href = '/shipping-details';
+            // ... 
+            window.location.href = '/orders'; 
         } else {
             alert('Error: ' + result.message);
         }

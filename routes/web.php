@@ -43,7 +43,8 @@ Route::get('/product/{slug}', [App\Http\Controllers\ProductController::class, 's
 Route::middleware(['auth'])->group(function () {
     Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout');
     Route::post('/place-order', [OrderController::class, 'store'])->name('order.store');
-    Route::get('/shipping-details', [OrderController::class, 'shippingDetails'])->name('order.shipping');
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/shipping-details/{id}', [OrderController::class, 'shippingDetails'])->name('order.shipping');
 });
 
 // 7. authentication routes (this should be at the end)

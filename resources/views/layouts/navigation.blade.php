@@ -10,7 +10,7 @@
       <li><a href="{{ route('home') }}">Home</a></li>
       <li><a href="{{ route('products.index') }}">Products</a></li>
       
-      <li><a href="{{ route('order.shipping') }}">Orders</a></li>
+      <li><a href="{{ route('orders.index') }}">My Orders</a></li>
     </ul>
 
     <div class="nav-actions">
