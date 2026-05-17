@@ -124,18 +124,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // 8. Order Placement Function
 async function placeOrder() {
-    // Collect data from the cart
-    const cartData = JSON.stringify(cart); // Convert our cart array to a string    
+
+
+    const paymentMethodElement = document.querySelector('input[name="payment_method"]:checked');
+    if (!paymentMethodElement) {
+        Swal.fire('Error', 'Please select a payment method!', 'error');
+        return;
+    }
+    const paymentMethod = paymentMethodElement.value;
+
+    const cartData = JSON.stringify(cart);    
     const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
     if (cart.length === 0) {
-        alert("Your cart is empty!");
+        Swal.fire('Empty Cart', 'Your cart is empty!', 'info');
         return;
     }
 
+
+    const btn = document.querySelector('.btn-checkout') || document.querySelector('button[onclick="placeOrder()"]');
+    if(btn) {
+        btn.disabled = true;
+        btn.innerText = 'Processing...';
+    }
+
+
+    const targetUrl = (paymentMethod === 'bkash') ? '/bkash/create' : '/place-order';
+
     try {
-        //  Send data to the Laravel controller
-        const response = await fetch('/place-order', {
+        const response = await fetch(targetUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -143,20 +160,31 @@ async function placeOrder() {
             },
             body: JSON.stringify({
                 cart_data: cartData,
-                total_amount: totalAmount
+                total_amount: totalAmount,
+                payment_method: paymentMethod
             })
         });
 
         const result = await response.json();
 
         if (result.success) {  
+
             localStorage.removeItem('ps_cart');
-            // ... 
-            window.location.href = '/orders'; 
+            cart = [];
+            if (typeof updateCartUI === "function") updateCartUI();
+            
+
+            if (paymentMethod === 'bkash' && result.payment_url) {
+                window.location.href = result.payment_url;
+            } else {
+                window.location.href = '/orders';
+            }
         } else {
-            alert('Error: ' + result.message);
+            if(btn) { btn.disabled = false; btn.innerText = 'Confirm Order'; }
+            Swal.fire('Error', result.message || 'Something went wrong!', 'error');
         }
     } catch (error) {
+        if(btn) { btn.disabled = false; btn.innerText = 'Confirm Order'; }
         console.error('Error placing order:', error);
     }
 }

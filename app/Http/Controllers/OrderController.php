@@ -68,8 +68,20 @@ class OrderController extends Controller
 
     public function index()
     {
-        $orders = Order::where('user_id', auth()->id())->latest()->get();
+        // Fetch only orders that are visible to the user
+        $orders = Order::where('user_id', auth()->id())
+                    ->where('is_visible_to_user', true)
+                    ->latest()
+                    ->get();
         return view('orders.index', compact('orders'));
+    }
+
+    public function hideOrder($id)
+    {
+        $order = Order::where('user_id', auth()->id())->findOrFail($id);
+        $order->update(['is_visible_to_user' => false]);
+
+        return back()->with('success', 'Order removed from history.');
     }
 
     // Display shipping details page

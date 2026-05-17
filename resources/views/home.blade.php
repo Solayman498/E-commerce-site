@@ -39,7 +39,7 @@
         <h2>Shop by Category</h2>
       </div>
       <div class="categories-grid">
-        {{-- আমরা এখানে ক্যাটাগরিগুলো হার্ডকোড করতে পারি অথবা কন্ট্রোলার থেকে পাঠাতে পারি --}}
+        
         @php
             $displayCategories = [
                 ['name' => 'Dog', 'emoji' => '🐕'],
@@ -53,7 +53,7 @@
           <div class="category-card" onclick="window.location='{{ route('products.index', ['category' => $cat['name']]) }}'">
             <div class="category-icon">{{ $cat['emoji'] }}</div>
             <div class="category-name">{{ $cat['name'] }}</div>
-            {{-- এখানে আপনি ক্যাটাগরি অনুযায়ী কাউন্টও দেখাতে পারেন --}}
+            
           </div>
         @endforeach
       </div>
@@ -108,7 +108,6 @@
 
 @push('scripts')
 <script>
-    // এখানে আর আগের CATEGORIES বা PRODUCTS রেন্ডারিং লজিক লাগবে না। 
-    // কারণ ব্লেড ফাইল এখন সার্ভার থেকেই ডাটা রেন্ডার করে দিচ্ছে।
+    //
 </script>
 @endpush

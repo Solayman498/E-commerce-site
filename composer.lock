@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fc2407b1a509d7fcbbc5146f46a2c921",
+    "content-hash": "d8a67257af1e15e3800de62f906885e9",
     "packages": [
         {
             "name": "brick/math",
@@ -3294,6 +3294,65 @@
                 "source": "https://github.com/ramsey/uuid/tree/4.9.2"
             },
             "time": "2025-12-14T04:43:48+00:00"
+        },
+        {
+            "name": "softrang/bkash-payment",
+            "version": "v1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/softrang/bkash-payment.git",
+                "reference": "3ac0f476065639d8793f5433a37c46b9a5296c15"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/softrang/bkash-payment/zipball/3ac0f476065639d8793f5433a37c46b9a5296c15",
+                "reference": "3ac0f476065639d8793f5433a37c46b9a5296c15",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^7.0",
+                "illuminate/support": "^10.0|^11.0|^12.0",
+                "php": ">=8.2"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "Bkash": "Softrang\\BkashPayment\\Facades\\Bkash"
+                    },
+                    "providers": [
+                        "Softrang\\BkashPayment\\BkashServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Softrang\\BkashPayment\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Softrang",
+                    "email": "softrang24@gmail.com"
+                }
+            ],
+            "description": "A Laravel-ready bKash payment gateway package by Softrang",
+            "keywords": [
+                "bkash",
+                "gateway",
+                "laravel",
+                "payment",
+                "softrang"
+            ],
+            "support": {
+                "issues": "https://github.com/softrang/bkash-payment/issues",
+                "source": "https://github.com/softrang/bkash-payment/tree/v1.1.1"
+            },
+            "time": "2025-12-02T13:00:32+00:00"
         },
         {
             "name": "symfony/clock",

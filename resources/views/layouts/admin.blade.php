@@ -28,9 +28,10 @@
         <div class="sidebar">
             <h2>🐾 PetShop Admin</h2>
             <hr>
-            <a href="{{ route('admin.products.index') }}">📦 Products Management</a>
-            <a href="/">🌐 Back to Website</a>
-            <a href="#" onclick="alert('Logout logic later')">🚪 Logout</a>
+            <a href="{{ route('admin.products.index') }}"> Products Management</a>
+            <a href="{{ route('admin.orders.index') }}">Order Tracking</a>
+            <a href="/"> Back to Website</a>
+            <a href="#" onclick="alert('Logout logic later')"> Logout</a>
         </div>
         <div class="main-content">
             @if(session('success'))

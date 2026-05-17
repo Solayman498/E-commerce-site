@@ -48,7 +48,7 @@
                         </div>
                     </div>
                     <div class="dropdown-body">
-                        {{-- অ্যাডমিন প্যানেল লিঙ্ক --}}
+                        {{-- Admin panel link --}}
                         @if(Auth::user()->is_admin)
                             <a href="{{ route('admin.products.index') }}" class="dropdown-item" style="color: #6366f1; font-weight: bold;">
                                 🛠️ Admin Panel

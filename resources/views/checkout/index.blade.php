@@ -32,15 +32,23 @@
                     <p class="mt-4 text-sm text-blue-500 italic">* These details are taken from your profile. Update profile to change them.</p>
                 </div>
 
-                <!-- Payment Method -->
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 mt-6">
-                    <h2 class="text-xl font-semibold mb-4">Payment Method</h2>
-                    <div class="flex items-center p-4 border-2 border-blue-500 rounded-xl bg-blue-50">
-                        <input type="radio" checked class="h-5 w-5 text-blue-600">
-                        <span class="ml-3 font-bold text-gray-700">bKash Payment (Safe & Fast)</span>
-                        <img src="https://path-to-bkash-logo.png" class="ml-auto h-8">
-                    </div>
+                <!-- Payment Method Selection -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 mt-6">
+                <h2 class="text-xl font-semibold mb-4">Select Payment Method</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Cash on Delivery -->
+                    <label class="flex items-center p-4 border rounded-xl cursor-pointer hover:bg-gray-50 bg-white" id="codLabel">
+                        <input type="radio" name="payment_method" value="cod" checked class="h-5 w-5 text-blue-600">>
+                        <span class="ml-3 font-bold text-gray-700">Cash on Delivery</span>
+                    </label>
+                    
+                    <!-- bKash -->
+                    <label class="flex items-center p-4 border rounded-xl cursor-pointer hover:bg-gray-50 bg-white" id="bkashLabel">
+                        <input type="radio" name="payment_method" value="bkash" class="h-5 w-5 text-blue-600">
+                        <span class="ml-3 font-bold text-gray-700">bKash Payment</span>
+                    </label>
                 </div>
+            </div>
             </div>
 
             <!-- Right: Order Summary -->

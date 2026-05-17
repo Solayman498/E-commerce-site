@@ -24,34 +24,48 @@
                     </div>
                 </div>
 
-                <!-- Tracking Timeline -->
+               <!-- Tracking Timeline -->
                 <div class="p-8">
                     <h2 class="text-lg font-bold mb-10 text-gray-800">Shipping Progress</h2>
                     <div class="relative flex justify-between items-start">
                         <!-- Line -->
                         <div class="absolute top-5 left-0 w-full h-1 bg-gray-200 -z-0"></div>
-                        <div class="absolute top-5 left-0 h-1 bg-green-500 transition-all duration-500 -z-0" 
-                             style="width: {{ $order->status == 'pending' ? '0%' : ($order->status == 'processing' ? '33%' : ($order->status == 'shipped' ? '66%' : '100%')) }}">
-                        </div>
 
-                        <!-- Steps -->
+                        <!-- Steps & Hierarchy Definition -->
                         @php
+                            
                             $steps = [
                                 ['id' => 'pending', 'label' => 'Placed', 'icon' => '📝'],
                                 ['id' => 'processing', 'label' => 'Processing', 'icon' => '⚙️'],
                                 ['id' => 'shipped', 'label' => 'Shipped', 'icon' => '🚚'],
                                 ['id' => 'delivered', 'label' => 'Delivered', 'icon' => '🏠']
                             ];
-                            $currentStatusIndex = array_search($order->status, array_column($steps, 'id'));
+
+                            $statusHierarchy = [
+                                'pending'    => 1,
+                                'processing' => 2,
+                                'shipped'    => 3,
+                                'delivered'  => 4
+                            ];
+
+                            $currentLevel = $statusHierarchy[$order->status] ?? 1;
                         @endphp
 
+                        <div class="absolute top-5 left-0 h-1 bg-green-500 transition-all duration-500" 
+                            style="width: {{ ($currentLevel - 1) * 33.33 }}%">
+                        </div>
+
                         @foreach($steps as $index => $step)
+                            @php 
+                                $stepLevel = $statusHierarchy[$step['id']]; 
+                            @endphp
                             <div class="flex flex-col items-center relative z-10">
+
                                 <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-white shadow-lg
-                                    {{ $index <= $currentStatusIndex ? 'bg-green-500' : 'bg-gray-300' }}">
+                                    {{ $currentLevel >= $stepLevel ? 'bg-green-500' : 'bg-gray-300' }}">
                                     {{ $step['icon'] }}
                                 </div>
-                                <p class="mt-3 font-bold text-sm {{ $index <= $currentStatusIndex ? 'text-green-600' : 'text-gray-400' }}">
+                                <p class="mt-3 font-bold text-sm {{ $currentLevel >= $stepLevel ? 'text-green-600' : 'text-gray-400' }}">
                                     {{ $step['label'] }}
                                 </p>
                             </div>
