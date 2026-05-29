@@ -2,8 +2,10 @@
   <div class="container">
 
     <a href="{{ route('home') }}" class="brand">
-      <div class="brand-icon">🐾</div>
-      PetShop
+        <div class="brand-icon  brand text-white">
+            <i class="fa-solid fa-paw"></i>
+        </div>
+        PetShop
     </a>
 
     <ul class="nav-links">
@@ -14,9 +16,9 @@
     </ul>
 
     <div class="nav-actions">
-        <button class="btn theme-toggle" id="themeToggle">🌙</button>
         <button class="btn cart-btn" id="cartBtn">
-            🛒 <span class="badge cart-count" id="cartCount">0</span>
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span class="badge cart-count" id="cartCount">0</span>
         </button>
 
         @auth
@@ -51,21 +53,21 @@
                         {{-- Admin panel link --}}
                         @if(Auth::user()->is_admin)
                             <a href="{{ route('admin.products.index') }}" class="dropdown-item" style="color: #6366f1; font-weight: bold;">
-                                🛠️ Admin Panel
+                                <i class="fa-solid fa-screwdriver-wrench"></i> Admin Panel
                             </a>
                             <div class="dropdown-divider"></div>
                         @endif
 
-                        <a href="{{ route('profile.edit') }}" class="dropdown-item">⚙️ Manage Profile</a>
-                        <a href="#" class="dropdown-item">📦 My Orders</a>
-                        <a href="#" class="dropdown-item">❤️ Wishlist</a>
+                        <a href="{{ route('profile.edit') }}" class="dropdown-item"><i class="fa-solid fa-gear"></i> Manage Profile</a>
+                        <a href="#" class="dropdown-item"><i class="fa-solid fa-box"></i> My Orders</a>
+                        <a href="#" class="dropdown-item"><i class="fa-solid fa-heart"></i> Wishlist</a>
                         <div class="dropdown-divider"></div>
                         
                         <form method="POST" action="{{ route('logout') }}" id="logout-form" style="display: none;">
                             @csrf
                         </form>
                         <button class="dropdown-item danger" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            🚪 Logout
+                            <i class="fa-solid fa-right-from-bracket"></i> Logout
                         </button>
                     </div>
                 </div>

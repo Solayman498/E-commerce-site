@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - PetShop</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <style>
         .admin-container { display: flex; min-height: 100vh; }
@@ -26,7 +27,7 @@
 <body>
     <div class="admin-container">
         <div class="sidebar">
-            <h2>🐾 PetShop Admin</h2>
+            <h2><i class="fa-solid fa-paw"></i> PetShop Admin</h2>
             <hr>
             <a href="{{ route('admin.products.index') }}"> Products Management</a>
             <a href="{{ route('admin.orders.index') }}">Order Tracking</a>

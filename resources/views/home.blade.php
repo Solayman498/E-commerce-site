@@ -13,7 +13,7 @@
   <section class="hero">
     <div class="container">
       <div class="hero-text">
-        <div class="hero-tag fade-in">🐾 Trusted by 10,000+ Pet Parents</div>
+        <div class="hero-tag fade-in"><i class="fa-solid fa-paw"></i> Trusted by 10,000+ Pet Parents</div>
         <h1 class="fade-in fade-in-1">
           Give Your Pet<br>
           <span>The Life They</span><br>Deserve.
@@ -39,24 +39,25 @@
         <h2>Shop by Category</h2>
       </div>
       <div class="categories-grid">
-        
-        @php
-            $displayCategories = [
-                ['name' => 'Dog', 'emoji' => '🐕'],
-                ['name' => 'Cat', 'emoji' => '🐈'],
-                ['name' => 'Bird', 'emoji' => '🦜'],
-                ['name' => 'Fish', 'emoji' => '🐠'],
-            ];
-        @endphp
+    
+    @php
+        $displayCategories = [
+            ['name' => 'Dog', 'icon' => 'fa-solid fa-dog'],
+            ['name' => 'Cat', 'icon' => 'fa-solid fa-cat'],
+            ['name' => 'Bird', 'icon' => 'fa-solid fa-dove'],
+            ['name' => 'Fish', 'icon' => 'fa-solid fa-fish'],
+        ];
+    @endphp
 
-        @foreach($displayCategories as $cat)
-          <div class="category-card" onclick="window.location='{{ route('products.index', ['category' => $cat['name']]) }}'">
-            <div class="category-icon">{{ $cat['emoji'] }}</div>
+    @foreach($displayCategories as $cat)
+        <div class="category-card" onclick="window.location='{{ route('products.index', ['category' => $cat['name']]) }}'">
+            <div class="category-icon">
+                <i class="{{ $cat['icon'] }}"></i>
+            </div>
             <div class="category-name">{{ $cat['name'] }}</div>
-            
-          </div>
-        @endforeach
-      </div>
+        </div>
+    @endforeach
+</div>
     </div>
   </section>
 

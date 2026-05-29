@@ -7,7 +7,7 @@
     <div class="container" style="max-width: 900px;">
         
         <div class="page-header" style="margin-bottom: 30px;">
-            <h1>⚙️ Manage Profile & Settings</h1>
+            <h1><i class="fa-solid fa-gear"></i> Manage Profile & Settings</h1>
             <p>Update your personal information, addresses, and security settings.</p>
         </div>
 
@@ -54,7 +54,7 @@
             <input type="text" name="phone" value="{{ old('phone', $user->phone) }}" placeholder="+880 1XXX XXXXXX">
         </div>
 
-        <h3 style="margin-top:25px;">📍 Shipping Address</h3>
+        <h3 style="margin-top:25px;"><i class="fas fa-map-marker-alt"></i> Shipping Address</h3>
 
         <div class="field-group">
             <label>Street Address</label>

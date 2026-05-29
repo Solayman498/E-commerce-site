@@ -6,7 +6,10 @@
 <div class="container-fluid py-4">
     <div class="card shadow-sm border-0 rounded-lg">
         <div class="card-header bg-white py-3">
-            <h5 class="mb-0 font-weight-bold text-gray-800">📦 Order Tracking Management</h5>
+            <h5 class="mb-0 font-bold text-gray-800 flex items-center gap-2">
+                <i class="fa-solid fa-box"></i> 
+                <span>Order Tracking Management</span>
+            </h5>
         </div>
         <div class="card-body">
             <div class="table-responsive">

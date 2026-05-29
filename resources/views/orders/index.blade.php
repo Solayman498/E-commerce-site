@@ -5,7 +5,6 @@
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <h1 class="text-3xl font-bold mb-8">My Orders</h1>
 
-        <!-- সফলভাবে ডিলিট হওয়ার পর ফ্ল্যাশ মেসেজ দেখানোর জন্য -->
         @if(session('success'))
             <div class="mb-4 p-4 bg-green-100 text-green-700 rounded-xl font-medium shadow-sm">
                 {{ session('success') }}
@@ -60,7 +59,7 @@
                                             @csrf
                                         </form>
                                             <button type="button" onclick="confirmDelete({{ $order->id }})" class="bg-red-500 text-white px-3 py-1.5 rounded-lg text-sm font-bold hover:bg-red-600">
-                                                🗑 Delete
+                                                <i class="fa-solid fa-trash"></i> Delete
                                             </button>
                                         </form>
                                     @endif
@@ -77,7 +76,7 @@
 @endsection
 
 @push('scripts')
-<!-- SweetAlert2 CDN আপনার layouts/app.blade.php এর মাথায় রাখতে পারেন -->
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
@@ -92,7 +91,6 @@ function confirmDelete(orderId) {
         confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
         if (result.isConfirmed) {
-            // যদি ইউজার 'Yes' এ ক্লিক করে, তবে ফর্মটি সাবমিট হবে
             document.getElementById('hide-form-' + orderId).submit();
         }
     })

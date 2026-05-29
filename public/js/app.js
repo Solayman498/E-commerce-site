@@ -1,20 +1,7 @@
 // 1. State Management
 let cart = JSON.parse(localStorage.getItem('ps_cart') || '[]');
 
-// 2. Theme Management (Dark Mode)
-function applyTheme(theme) {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('ps_theme', theme);
-    const btn = document.getElementById('themeToggle');
-    if (btn) btn.textContent = theme === 'dark' ? '☀️' : '🌙';
-}
-
-function toggleTheme() {
-    const current = localStorage.getItem('ps_theme') || 'light';
-    applyTheme(current === 'dark' ? 'light' : 'dark');
-}
-
-// 3. Profile Dropdown
+// 2. Profile Dropdown
 function initProfileDropdown() {
     const wrap = document.getElementById('profileWrap');
     if (!wrap) return;
@@ -26,7 +13,7 @@ function initProfileDropdown() {
     document.addEventListener('click', () => wrap.classList.remove('open'));
 }
 
-// 4. Cart Logic
+// 3. Cart Logic
 function addToCart(id, name, price, image) {
     const existing = cart.find(i => i.id === id);
     if (existing) existing.qty++;
@@ -37,7 +24,7 @@ function addToCart(id, name, price, image) {
     // openSidebar();
 }
 
-// 5. Cart Sidebar Rendering
+// 4. Cart Sidebar Rendering
 function renderCartItems() {
     const container = document.getElementById('cartItemsList');
     if (!container) return;
@@ -59,18 +46,25 @@ function renderCartItems() {
                     <button onclick="updateQty(${item.id}, 1)">+</button>
                 </div>
             </div>
-            <button onclick="removeFromCart(${item.id})" style="color:red; background:none; border:none; cursor:pointer;">🗑</button>
+            <button onclick="removeFromCart(${item.id})" style="color:red; background:none; border:none; cursor:pointer;">
+                <i class="fa-solid fa-trash"></i>
+            </button>
         </div>
     `).join('');
 }
 
-// 6. Cart UI Update
-
+// 5. Cart UI Update
 function updateCartUI() {
     const count = cart.reduce((n, item) => n + item.qty, 0);
     document.querySelectorAll('.cart-count').forEach(el => {
         el.textContent = count;
-        el.classList.toggle('show', count > 0);
+        if (count > 0) {
+            el.classList.add('show');
+            el.style.display = 'inline-flex';
+        } else {
+            el.classList.remove('show');
+            el.style.display = 'none';
+        }
     });
     const totalEl = document.getElementById('cartTotal');
     if (totalEl) totalEl.textContent = cart.reduce((sum, item) => sum + item.price * item.qty, 0).toFixed(2) + ' BDT';
@@ -105,27 +99,40 @@ function removeFromCart(id) {
     renderCartItems();
 }
 
-// 7. Initialization (DOMContentLoaded)
+// 6. Initialization (DOMContentLoaded)
 document.addEventListener('DOMContentLoaded', () => {
-    // Theme setup
-    const savedTheme = localStorage.getItem('ps_theme') || 'light';
-    applyTheme(savedTheme);
-    document.getElementById('themeToggle')?.addEventListener('click', toggleTheme);
+    document.documentElement.setAttribute('data-theme', 'light');
+    const themeBtn = document.getElementById('themeToggle');
+    if (themeBtn) {
+        themeBtn.style.display = 'none'; 
+    }
 
     // Cart events  
-    document.getElementById('cartBtn')?.addEventListener('click', (e) => { e.preventDefault(); openSidebar(); });
-    document.getElementById('closeSidebarBtn')?.addEventListener('click', closeSidebar);
-    document.getElementById('cartOverlay')?.addEventListener('click', closeSidebar);
+    const cartBtn = document.getElementById('cartBtn');
+    if (cartBtn) {
+        cartBtn.addEventListener('click', (e) => { 
+            e.preventDefault(); 
+            openSidebar(); 
+        });
+    }
+    
+    const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+    if (closeSidebarBtn) {
+        closeSidebarBtn.addEventListener('click', closeSidebar);
+    }
+    
+    const cartOverlay = document.getElementById('cartOverlay');
+    if (cartOverlay) {
+        cartOverlay.addEventListener('click', closeSidebar);
+    }
 
     // Other UI
     initProfileDropdown();
     updateCartUI();
 });
 
-// 8. Order Placement Function
+// 7. Order Placement Function
 async function placeOrder() {
-
-
     const paymentMethodElement = document.querySelector('input[name="payment_method"]:checked');
     if (!paymentMethodElement) {
         Swal.fire('Error', 'Please select a payment method!', 'error');
@@ -141,13 +148,11 @@ async function placeOrder() {
         return;
     }
 
-
     const btn = document.querySelector('.btn-checkout') || document.querySelector('button[onclick="placeOrder()"]');
     if(btn) {
         btn.disabled = true;
         btn.innerText = 'Processing...';
     }
-
 
     const targetUrl = (paymentMethod === 'bkash') ? '/bkash/create' : '/place-order';
 
@@ -168,11 +173,9 @@ async function placeOrder() {
         const result = await response.json();
 
         if (result.success) {  
-
             localStorage.removeItem('ps_cart');
             cart = [];
-            if (typeof updateCartUI === "function") updateCartUI();
-            
+            updateCartUI();
 
             if (paymentMethod === 'bkash' && result.payment_url) {
                 window.location.href = result.payment_url;
@@ -189,7 +192,7 @@ async function placeOrder() {
     }
 }
 
-//9. Checkout Page Initialization
+// 8. Checkout Page Initialization
 function initCheckoutPage() {
     const summaryContainer = document.getElementById('checkoutSummaryItems');
     if (!summaryContainer) return; 
@@ -198,7 +201,6 @@ function initCheckoutPage() {
         return;
     }
 
-    //  show cart items in summary
     summaryContainer.innerHTML = cart.map(item => `
         <div class="flex justify-between items-center bg-gray-50 p-3 rounded-xl">
             <div class="flex items-center gap-3">
@@ -212,13 +214,18 @@ function initCheckoutPage() {
         </div>
     `).join('');
 
-    // total calculation
     const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
     const deliveryFee = 60;
     const total = subtotal + deliveryFee;
 
-    document.getElementById('summarySubtotal').textContent = subtotal.toFixed(2) + ' BDT';
-    document.getElementById('summaryTotal').textContent = total.toFixed(2) + ' BDT';
+    const subtotalEl = document.getElementById('summarySubtotal');
+    const totalEl = document.getElementById('summaryTotal');
+    
+    if (subtotalEl) subtotalEl.textContent = subtotal.toFixed(2) + ' BDT';
+    if (totalEl) totalEl.textContent = total.toFixed(2) + ' BDT';
 }
 
-document.addEventListener('DOMContentLoaded', initCheckoutPage);
+
+if (document.getElementById('checkoutSummaryItems')) {
+    document.addEventListener('DOMContentLoaded', initCheckoutPage);
+}

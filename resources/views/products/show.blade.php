@@ -10,7 +10,6 @@
             <div class="flex flex-wrap -mx-4">
                 <!-- Product Image Section -->
                 <div class="w-full md:w-1/2 px-4 mb-8">
-                    <!-- সরাসরি ইনলাইন স্টাইল দিয়ে ইমেজ সাইজ কন্ট্রোল করা হয়েছে যেন style.css এর ওপর নির্ভর না করতে হয় -->
                     <div class="shadow-sm border border-gray-100 rounded-2xl bg-white flex items-center justify-center overflow-hidden" style="height: 450px;">
                         <img src="{{ asset('storage/products/' . $product->image) }}" 
                              alt="{{ $product->name }}" 
@@ -48,7 +47,7 @@
                                     <button 
                                         class="add-to-cart-btn w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-xl shadow-lg transition-all"
                                         onclick="addToCart('{{ $product->id }}', '{{ $product->name }}', '{{ $product->price }}', '{{ $product->image }}');">
-                                        Add To Cart 🛒
+                                        <i class="fa-solid fa-cart-plus"></i> Add To Cart
                                     </button>
                                 </div>
                                 <div class="text-right">

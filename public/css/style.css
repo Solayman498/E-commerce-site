@@ -866,23 +866,23 @@ input, textarea { font-family: inherit; }
 
 /* Product Detail Page Custom Improvements */
 
-/* ইমেজের জন্য ব্যাকগ্রাউন্ড এবং হোভার ইফেক্ট */
+
 .group img {
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Add To Cart বাটনকে আরও সুন্দর করা */
+
 button.active\:scale-95:active {
     transform: scale(0.95);
 }
 
-/* রিলেটেড প্রোডাক্ট কার্ডে হালকা শ্যাডো ট্রানজিশন */
+
 .group:hover {
     border-color: #3b82f6; /* Blue-500 */
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
-/* কাস্টম স্ক্রলবার (যদি প্রয়োজন হয়) */
+
 ::-webkit-scrollbar {
     width: 8px;
 }
@@ -897,19 +897,18 @@ button.active\:scale-95:active {
     background: #2563eb;
 }
 
-/* মোবাইল ডিভাইসে ইমেজের উচ্চতা ঠিক করা */
+/* mobile */
 @media (max-width: 768px) {
     div[style*="height: 450px;"] {
         height: 300px !important;
     }
     
     .text-4xl {
-        font-size: 1.875rem; /* text-3xl */
+        font-size: 1.875rem; 
         line-height: 2.25rem;
     }
 }
 
-/* টেক্সট ডেকোরেশন এবং ফন্ট ফ্যামিলি (PetShop ভাইব) */
 body {
     font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;

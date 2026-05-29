@@ -5,41 +5,32 @@
 <footer class="footer">
   <div class="container">
     <div class="footer-grid">
-      <div class="footer-brand">
-        <a href="index.html" class="brand">
-          <div class="brand-icon" style="width:32px;height:32px;font-size:1rem;">🐾</div>
-          PetShop
+      <div>
+        <a href="/" class="brand">
+          <i class="fa-solid fa-paw"></i> PetShop
         </a>
-        <p>Premium pet products delivered with care. Your pet's happiness is our mission.</p>
+        <p>Happy pets, happy life.</p>
       </div>
-      <div class="footer-col">
-        <h5>Shop</h5>
-        <a href="products.html">All Products</a>
-        <a href="#">Dog Food</a>
-        <a href="#">Cat Accessories</a>
-        <a href="#">Toys & Play</a>
-        <a href="#">Deals</a>
+      <div>
+          <h5 class="font-bold text-gray-800 mb-3">Quick Links</h5>
+          <ul class="space-y-2">
+              <li><a href="{{ route('home') }}" class="text-gray-500 hover:text-blue-500 transition">Home</a></li>
+              <li><a href="{{ route('products.index') }}" class="text-gray-500 hover:text-blue-500 transition">Shop</a></li>
+              <li><a href="#" class="text-gray-500 hover:text-blue-500 transition">About</a></li>
+              <li><a href="#" class="text-gray-500 hover:text-blue-500 transition">Contact</a></li>
+          </ul>
       </div>
-      <div class="footer-col">
-        <h5>Account</h5>
-        <a href="#">My Profile</a>
-        <a href="#">Orders</a>
-        <a href="#">Wishlist</a>
-        <a href="#">Settings</a>
-        <a href="login.html">Sign In</a>
-      </div>
-      <div class="footer-col">
-        <h5>Support</h5>
-        <a href="#">Help Center</a>
-        <a href="#">Shipping Info</a>
-        <a href="#">Returns</a>
-        <a href="#">Contact Us</a>
-        <a href="#">Privacy Policy</a>
+      <div>
+        <ul>
+          <li><h5>Follow Us</h5></li>
+          <li><a href="#"><i class="fa-brands fa-facebook"></i> Facebook</a></li>
+          <li><a href="#"><i class="fa-brands fa-instagram"></i> Instagram</a></li>
+        </ul>
+        
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2025 PetShop. All rights reserved.</span>
-      <span>Made with ❤️ for pet lovers everywhere 🐾</span>
+      © 2025 PetShop
     </div>
   </div>
 </footer>
