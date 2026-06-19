@@ -2,21 +2,7 @@
 
 @section('title', 'PetShop — Products')
 
-@push('styles')
-  <style>
-  
-    .filter-mobile-bar { display: none; margin-bottom: 16px; }
-    .filter-toggle-btn { display: flex; align-items: center; gap: 8px; padding: 10px 18px; background: var(--clr-surface); border: 1.5px solid var(--clr-border); border-radius: var(--r-sm); font-size: .88rem; font-weight: 600; }
-    .filter-drawer { background: var(--clr-surface); border: 1px solid var(--clr-border); border-radius: var(--r-lg); padding: 20px; display: none; flex-direction: column; gap: 20px; margin-bottom: 16px; }
-    .filter-drawer.open { display: flex; }
-    @media (max-width: 1024px) { .products-sidebar { display: none; } .filter-mobile-bar { display: flex; } }
-  </style>
-@endpush
-
 @section('content')
-<aside class="cart-sidebar" id="cartSidebar">
-    </aside>
-
 <main class="page-content">
   <div class="page-banner">
     <div class="container">
@@ -27,8 +13,24 @@
 
   <div class="section">
     <div class="container">
+      
       <div class="filter-mobile-bar">
-        <button class="filter-toggle-btn" id="filterToggle">🔧 Filters</button>
+        <button class="filter-toggle-btn" id="filterToggle">
+            <i class="fa-solid fa-sliders"></i> Filter By Category
+        </button>
+      </div>
+
+      <div class="filter-drawer" id="filterDrawer">
+        <h4 style="font-size: .85rem; font-weight: 700; text-transform: uppercase; color: var(--clr-text-muted); margin-bottom: 4px;">Category</h4>
+        <div class="filter-chip-list">
+            <a href="{{ route('products.index') }}" class="filter-chip {{ !request('category') ? 'active' : '' }}">All</a>
+            @foreach(['Dog', 'Cat', 'Birds', 'Fish'] as $cat)
+                <a href="{{ route('products.index', ['category' => $cat]) }}" 
+                   class="filter-chip {{ request('category') == $cat ? 'active' : '' }}">
+                   {{ $cat }}
+                </a>
+            @endforeach
+        </div>
       </div>
 
       <div class="products-page-layout">
@@ -45,12 +47,12 @@
                     @endforeach
                 </div>
             </div>
-            </aside>
+        </aside>
 
         <div>
           <div class="search-bar">
             <span class="icon">🔍</span>
-            <input type="text" id="searchInput" placeholder="Search products..." />
+            <input type="text" id="searchInput" placeholder="Search products in this list..." />
           </div>
 
           <div class="products-main-header">
@@ -65,8 +67,9 @@
                             <span class="product-badge hot">HOT</span>
                         @endif
                         <a href="{{ route('products.show', $product->slug) }}">
-                        <img src="{{ asset('storage/products/' . $product->image) }}" alt="{{ $product->name }}" 
-                             style="width: 100%; height: 100%; object-fit: contain;">
+                            <img src="{{ asset('storage/products/' . $product->image) }}" alt="{{ $product->name }}" 
+                                 style="width: 100%; height: 100%; object-fit: contain;"
+                                 onerror="this.src='https://via.placeholder.com/220'">
                         </a>
                     </div>
                     <div class="product-body">
@@ -83,35 +86,19 @@
                 </div>
             @empty
                 <div id="emptyState" style="text-align:center; padding:60px 20px; grid-column: 1/-1;">
-                    <h3 style="margin-bottom:8px;">No products found</h3>
+                    <h3 style="margin-bottom:8px; color: var(--clr-text-muted);">No products found in this category</h3>
                     <a href="{{ route('products.index') }}" class="btn btn-outline">Clear Filters</a>
                 </div>
             @endforelse
           </div>
+
           <div class="pagination-wrapper">
-              {{ $products->links() }}
+              {{ $products->appends(request()->query())->links() }}
           </div>
         </div>
       </div>
+
     </div>
   </div>
 </main>
 @endsection
-
-@push('scripts')
-<script>
-    // cart logic
-    document.getElementById('filterToggle')?.addEventListener('click', () => {
-        document.getElementById('filterDrawer')?.classList.toggle('open');
-    });
-
-    // search logic
-    document.getElementById('searchInput')?.addEventListener('keyup', function() {
-        let value = this.value.toLowerCase();
-        document.querySelectorAll('.product-card').forEach(card => {
-            let name = card.querySelector('.product-name').textContent.toLowerCase();
-            card.style.display = name.includes(value) ? 'block' : 'none';
-        });
-    });
-</script>
-@endpush

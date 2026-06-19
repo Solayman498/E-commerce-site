@@ -1,36 +1,38 @@
-
-<!-- ═══════════════════════════════════════════════
-     FOOTER
-════════════════════════════════════════════════ -->
 <footer class="footer">
   <div class="container">
-    <div class="footer-grid">
-      <div>
+    <div class="footer-flex-container">
+      
+      <div class="footer-brand-area">
         <a href="/" class="brand">
-          <i class="fa-solid fa-paw"></i> PetShop
+          <i class="fa-solid fa-paw text-blue-600"></i> PetShop
         </a>
-        <p>Happy pets, happy life.</p>
+        <p class="text-xs text-gray-400">Happy pets, happy life.</p>
       </div>
-      <div>
-          <h5 class="font-bold text-gray-800 mb-3">Quick Links</h5>
-          <ul class="space-y-2">
-              <li><a href="{{ route('home') }}" class="text-gray-500 hover:text-blue-500 transition">Home</a></li>
-              <li><a href="{{ route('products.index') }}" class="text-gray-500 hover:text-blue-500 transition">Shop</a></li>
-              <li><a href="#" class="text-gray-500 hover:text-blue-500 transition">About</a></li>
-              <li><a href="#" class="text-gray-500 hover:text-blue-500 transition">Contact</a></li>
-          </ul>
+
+      <ul class="footer-links-inline">
+        <li><a href="{{ route('home') }}">Home</a></li>
+        <li><a href="{{ route('products.index') }}">Shop</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+
+      <ul class="footer-links-inline">
+        <li>
+          <a href="#" target="_blank" rel="noopener" aria-label="Facebook">
+            <i class="fa-brands fa-facebook text-base"></i> Facebook
+          </a>
+        </li>
+        <li>
+          <a href="#" target="_blank" rel="noopener" aria-label="Instagram">
+            <i class="fa-brands fa-instagram text-base"></i> Instagram
+          </a>
+        </li>
+      </ul>
+
+      <div class="footer-bottom-compact text-gray-400">
+        &copy; {{ date('Y') }} PetShop. All rights reserved.
       </div>
-      <div>
-        <ul>
-          <li><h5>Follow Us</h5></li>
-          <li><a href="#"><i class="fa-brands fa-facebook"></i> Facebook</a></li>
-          <li><a href="#"><i class="fa-brands fa-instagram"></i> Instagram</a></li>
-        </ul>
-        
-      </div>
-    </div>
-    <div class="footer-bottom">
-      © 2025 PetShop
+
     </div>
   </div>
 </footer>
