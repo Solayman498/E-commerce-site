@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PetShop — Login</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>">
 </head>
@@ -18,10 +19,10 @@
         <h2>Your pets deserve<br>the very best.</h2>
         <p>Premium food, accessories, and toys — delivered to your door with love.</p>
         <ul class="auth-features">
-          <li class="auth-feature"><span class="auth-feature-icon">🚚</span> Free delivery on orders over $40</li>
-          <li class="auth-feature"><span class="auth-feature-icon">⭐</span> 10,000+ happy pet parents</li>
-          <li class="auth-feature"><span class="auth-feature-icon">🔒</span> Secure, trusted checkout</li>
-          <li class="auth-feature"><span class="auth-feature-icon">💚</span> Vet-approved products only</li>
+          <li class="auth-feature"><span class="auth-feature-icon"><i class="fa-solid fa-truck-fast"></i></span> Free delivery on orders over $40</li>
+          <li class="auth-feature"><span class="auth-feature-icon"><i class="fa-solid fa-star"></i></span> 10,000+ happy pet parents</li>
+          <li class="auth-feature"><span class="auth-feature-icon"><i class="fa-solid fa-lock"></i></span> Secure, trusted checkout</li>
+          <li class="auth-feature"><span class="auth-feature-icon"><i class="fa-solid fa-heart"></i></span> Vet-approved products only</li>
         </ul>
       </div>
     </aside>
@@ -32,8 +33,10 @@
 
         <div class="auth-header">
           <a href="index.html" class="brand">
-            <div class="brand-icon">🐾</div>
-            PetShop
+              <div class="brand-icon">
+                  <i class="fa-solid fa-paw" style="color: white;"></i>
+              </div>
+              <span style="color: green;">PetShop</span>
           </a>
           <h1>Welcome back!</h1>
           <p>Sign in to continue shopping for your furry friends.</p>

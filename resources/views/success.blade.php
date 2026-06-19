@@ -39,3 +39,9 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    localStorage.removeItem('ps_cart');
+</script>
+@endpush

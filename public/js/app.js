@@ -1,19 +1,67 @@
+
 // 1. State Management
+
 let cart = JSON.parse(localStorage.getItem('ps_cart') || '[]');
 
-// 2. Profile Dropdown
-function initProfileDropdown() {
+
+// 2. Responsive Hamburger Menu & Profile Dropdown
+
+function initResponsiveUI() {
+
+    const hamburgerBtn = document.getElementById('hamburgerMenuBtn');
+    const mobileNavMenu = document.getElementById('mobileNavMenu');
+
+    if (hamburgerBtn && mobileNavMenu) {
+
+        hamburgerBtn.replaceWith(hamburgerBtn.cloneNode(true));
+        const newHamburgerBtn = document.getElementById('hamburgerMenuBtn');
+
+        newHamburgerBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            newHamburgerBtn.classList.toggle('open'); 
+            mobileNavMenu.classList.toggle('show');   
+        });
+    }
+
+
     const wrap = document.getElementById('profileWrap');
-    if (!wrap) return;
-    const btn = wrap.querySelector('.profile-btn');
-    btn?.addEventListener('click', e => {
-        e.stopPropagation();
-        wrap.classList.toggle('open');
+    if (wrap) {
+        const btn = wrap.querySelector('.profile-btn');
+        if (btn) {
+            btn.replaceWith(btn.cloneNode(true));
+            const newBtn = wrap.querySelector('.profile-btn');
+
+            newBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                wrap.classList.toggle('open');
+            });
+        }
+    }
+
+
+    document.addEventListener('click', (e) => {
+        const currentHamburger = document.getElementById('hamburgerMenuBtn');
+        const currentMobileMenu = document.getElementById('mobileNavMenu');
+
+
+        if (currentMobileMenu && currentMobileMenu.classList.contains('show')) {
+            if (!currentMobileMenu.contains(e.target) && !currentHamburger.contains(e.target)) {
+                currentHamburger.classList.remove('open');
+                currentMobileMenu.classList.remove('show');
+            }
+        }
+
+        if (wrap && wrap.classList.contains('open')) {
+            if (!wrap.contains(e.target)) {
+                wrap.classList.remove('open');
+            }
+        }
     });
-    document.addEventListener('click', () => wrap.classList.remove('open'));
 }
 
+
 // 3. Cart Logic
+
 function addToCart(id, name, price, image) {
     const existing = cart.find(i => i.id === id);
     if (existing) existing.qty++;
@@ -21,10 +69,12 @@ function addToCart(id, name, price, image) {
     
     localStorage.setItem('ps_cart', JSON.stringify(cart));
     updateCartUI();
-    // openSidebar();
+   
 }
 
+
 // 4. Cart Sidebar Rendering
+
 function renderCartItems() {
     const container = document.getElementById('cartItemsList');
     if (!container) return;
@@ -41,9 +91,9 @@ function renderCartItems() {
                 <div style="font-weight:bold; font-size:14px;">${item.name}</div>
                 <div style="font-size:12px;">${(item.price * item.qty).toFixed(2)} BDT</div>
                 <div style="display:flex; align-items:center; gap:8px; margin-top:5px;">
-                    <button onclick="updateQty(${item.id}, -1)">-</button>
-                    <span>${item.qty}</span>
-                    <button onclick="updateQty(${item.id}, 1)">+</button>
+                    <button class="qty-btn" onclick="updateQty(${item.id}, -1)">-</button>
+                    <span class="qty-val">${item.qty}</span>
+                    <button class="qty-btn" onclick="updateQty(${item.id}, 1)">+</button>
                 </div>
             </div>
             <button onclick="removeFromCart(${item.id})" style="color:red; background:none; border:none; cursor:pointer;">
@@ -52,6 +102,7 @@ function renderCartItems() {
         </div>
     `).join('');
 }
+
 
 // 5. Cart UI Update
 function updateCartUI() {
@@ -99,15 +150,18 @@ function removeFromCart(id) {
     renderCartItems();
 }
 
+
 // 6. Initialization (DOMContentLoaded)
+
 document.addEventListener('DOMContentLoaded', () => {
+
     document.documentElement.setAttribute('data-theme', 'light');
     const themeBtn = document.getElementById('themeToggle');
     if (themeBtn) {
         themeBtn.style.display = 'none'; 
     }
 
-    // Cart events  
+
     const cartBtn = document.getElementById('cartBtn');
     if (cartBtn) {
         cartBtn.addEventListener('click', (e) => { 
@@ -126,12 +180,20 @@ document.addEventListener('DOMContentLoaded', () => {
         cartOverlay.addEventListener('click', closeSidebar);
     }
 
-    // Other UI
-    initProfileDropdown();
+
+    if (window.location.pathname.includes('/bkash/success')) {
+        localStorage.removeItem('ps_cart');
+        cart = [];
+    }
+
+
+    initResponsiveUI();
     updateCartUI();
 });
 
+
 // 7. Order Placement Function
+
 async function placeOrder() {
     const paymentMethodElement = document.querySelector('input[name="payment_method"]:checked');
     if (!paymentMethodElement) {
@@ -173,18 +235,14 @@ async function placeOrder() {
         const result = await response.json();
 
         if (result.success) {  
-            localStorage.removeItem('ps_cart');
-            cart = [];
-            updateCartUI();
-
             if (paymentMethod === 'bkash' && result.payment_url) {
                 window.location.href = result.payment_url;
             } else {
+                localStorage.removeItem('ps_cart');
+                cart = [];
+                if (typeof updateCartUI === "function") updateCartUI();
                 window.location.href = '/orders';
             }
-        } else {
-            if(btn) { btn.disabled = false; btn.innerText = 'Confirm Order'; }
-            Swal.fire('Error', result.message || 'Something went wrong!', 'error');
         }
     } catch (error) {
         if(btn) { btn.disabled = false; btn.innerText = 'Confirm Order'; }
@@ -192,7 +250,9 @@ async function placeOrder() {
     }
 }
 
+
 // 8. Checkout Page Initialization
+
 function initCheckoutPage() {
     const summaryContainer = document.getElementById('checkoutSummaryItems');
     if (!summaryContainer) return; 
@@ -224,7 +284,6 @@ function initCheckoutPage() {
     if (subtotalEl) subtotalEl.textContent = subtotal.toFixed(2) + ' BDT';
     if (totalEl) totalEl.textContent = total.toFixed(2) + ' BDT';
 }
-
 
 if (document.getElementById('checkoutSummaryItems')) {
     document.addEventListener('DOMContentLoaded', initCheckoutPage);

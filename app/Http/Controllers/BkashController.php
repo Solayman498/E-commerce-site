@@ -77,44 +77,39 @@ class BkashController extends Controller
     }
 
     // 2.  (Callback)
-    public function callback(Request $request)
-    {
-        // if failed or cancelled by user
-        if (in_array($request->status, ['failure', 'cancel'])) {
-            return redirect()->route('orders.index')->with('error', 'Payment cancelled or failed.');
-        }
-
-        $paymentID = $request->paymentID;
-        $execute = Bkash::executePayment($paymentID);
-
-        // '0000' its means payment is successful and verified by bKash
-        if (isset($execute['statusCode']) && $execute['statusCode'] === '0000') {
-
-            // Find the order ID sent to us from bKash
-            $orderId = $execute['merchantInvoiceNumber'] ?? null;
-            
-            if ($orderId) {
-                $order = Order::find($orderId);
-                if ($order) {
-                    // database update 
-                    $order->update([
-                        'payment_status' => 'paid'
-                    ]);
-                }
-            }
-
-            // show data on success page
-            session()->put('bkash_success', [
-                'trxID'      => $execute['trxID'],
-                'amount'     => $execute['amount'],
-                'order_no'   => $order ? $order->order_number : 'N/A',
-            ]);
-
-            return redirect()->route('bkash.success');
-        }
-
-        return redirect()->route('orders.index')->with('error', 'Payment verification failed.');
+   public function callback(Request $request)
+{
+   
+    if (in_array($request->status, ['failure', 'cancel'])) {
+        
+        return redirect()->route('checkout')->with('error', 'bKash Payment ' . ucfirst($request->status) . 'ed. Please try again.');
     }
+
+    $paymentID = $request->paymentID;
+    $execute = Bkash::executePayment($paymentID);
+
+    if (isset($execute['statusCode']) && $execute['statusCode'] === '0000') {
+        $orderId = $execute['merchantInvoiceNumber'] ?? null;
+        
+        if ($orderId) {
+            $order = Order::find($orderId);
+            if ($order) {
+                $order->update(['payment_status' => 'paid']);
+            }
+        }
+
+        session()->put('bkash_success', [
+            'trxID'      => $execute['trxID'],
+            'amount'     => $execute['amount'],
+            'order_no'   => $order ? $order->order_number : 'N/A',
+        ]);
+
+        return redirect()->route('bkash.success');
+    }
+
+    return redirect()->route('checkout')->with('error', 'Payment verification failed from bKash.');
+}
+
 
     // 3.payment success page
     public function success()

@@ -2,7 +2,7 @@
   <div class="container">
 
     <a href="{{ route('home') }}" class="brand">
-        <div class="brand-icon  brand text-white">
+        <div class="brand-icon text-white">
             <i class="fa-solid fa-paw"></i>
         </div>
         PetShop
@@ -11,7 +11,6 @@
     <ul class="nav-links">
       <li><a href="{{ route('home') }}">Home</a></li>
       <li><a href="{{ route('products.index') }}">Products</a></li>
-      
       <li><a href="{{ route('orders.index') }}">My Orders</a></li>
     </ul>
 
@@ -23,7 +22,7 @@
 
         @auth
             <div class="profile-wrap" id="profileWrap">
-                <button class="profile-btn">
+                <button class="profile-btn" id="profileBtn">
                     <div class="profile-avatar user-avatar">
                         @if(Auth::user()->profile_image)
                             <img src="{{ asset('storage/' . Auth::user()->profile_image) }}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">
@@ -50,16 +49,15 @@
                         </div>
                     </div>
                     <div class="dropdown-body">
-                        {{-- Admin panel link --}}
                         @if(Auth::user()->is_admin)
-                            <a href="{{ route('admin.products.index') }}" class="dropdown-item" style="color: #6366f1; font-weight: bold;">
+                            <a href="{{ route('admin.products.index') }}" class="dropdown-item" style="color: var(--clr-primary); font-weight: bold;">
                                 <i class="fa-solid fa-screwdriver-wrench"></i> Admin Panel
                             </a>
                             <div class="dropdown-divider"></div>
                         @endif
 
                         <a href="{{ route('profile.edit') }}" class="dropdown-item"><i class="fa-solid fa-gear"></i> Manage Profile</a>
-                        <a href="#" class="dropdown-item"><i class="fa-solid fa-box"></i> My Orders</a>
+                        <a href="{{ route('orders.index') }}" class="dropdown-item"><i class="fa-solid fa-box"></i> My Orders</a>
                         <a href="#" class="dropdown-item"><i class="fa-solid fa-heart"></i> Wishlist</a>
                         <div class="dropdown-divider"></div>
                         
@@ -75,12 +73,18 @@
         @endauth
 
         @guest
-            <a href="{{ route('login') }}" class="btn btn-outline" style="margin-left: 10px;">Login</a>
+            <a href="{{ route('login') }}" class="btn btn-outline" style="padding: 8px 16px;">Login</a>
         @endguest
 
-        <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <button class="hamburger" id="hamburgerMenuBtn" aria-label="Toggle menu">
             <span></span><span></span><span></span>
         </button>
     </div>
   </div>
 </nav>
+
+<div class="mobile-nav" id="mobileNavMenu">
+    <a href="{{ route('home') }}">Home</a>
+    <a href="{{ route('products.index') }}">Products</a>
+    <a href="{{ route('orders.index') }}">My Orders</a>
+</div>
